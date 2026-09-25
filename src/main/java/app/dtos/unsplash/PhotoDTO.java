@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown=true)
-//Denne klasse skal hente en farve fra Unsplash
+//Denne klasse modtager data for hvert enkelt billede og trækker de felter ud, jeg skal bruge
 public class PhotoDTO {
 
     private String id; //Billedets eksterne id fra Unsplash. Skal bruges til check i db, om bruger allerede har billede
