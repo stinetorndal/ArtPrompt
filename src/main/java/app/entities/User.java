@@ -1,6 +1,7 @@
 package app.entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -29,4 +30,8 @@ public class User {
     //Relation til User-objekt så JAP/Hibernate ved, note hører til bruger
     private List<SavedImage> images = new ArrayList<>();
 
+    public User(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
 }

@@ -11,7 +11,11 @@ import java.util.List;
 //Denne klasse skal gemme brugerdata i DB
 public class UserDAO implements IDAO<User, Long> { //JPA-standar er Long
 
-    private final EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
+    private EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
+
+    public UserDAO(EntityManagerFactory emf) {
+        this.emf = emf;
+    }
 
     @Override
     public User create(User user) {
@@ -77,6 +81,29 @@ public class UserDAO implements IDAO<User, Long> { //JPA-standar er Long
             return isDeleted;
         } finally {
             em.close();
+        }
+    }
+
+    public User findByEmail(String email) {
+            try (EntityManager em = emf.createEntityManager()) {
+                List<User> users = em.createQuery(
+                        "SELECT u FROM User u WHERE u.email = :email", User.class)
+                        .setParameter("email", email)
+                        .getResultList();
+                if (users.isEmpty()){
+                    return  null;
+                } return  users.get(0);
+
+        }
+
+    }
+    //Findes email
+    public boolean doesEmailExist(String email) {
+        try (EntityManager em = emf.createEntityManager()) {
+            Long count = em.createQuery("SELECT COUNT(u) FROM User u WHERE u.email = :email", Long.class)
+                    .setParameter("email", email)
+                    .getSingleResult();
+            return count>0;
         }
     }
 }
