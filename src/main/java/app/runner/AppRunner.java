@@ -17,7 +17,7 @@ public class AppRunner {
 
     EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
     PromptWordSeeder seeder = new PromptWordSeeder(emf);
-    PromptService serivce = new PromptService(emf);
+    PromptService service = new PromptService(emf);
 
 
     public void run() {

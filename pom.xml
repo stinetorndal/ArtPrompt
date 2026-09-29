@@ -20,6 +20,7 @@
         <logback-classic>1.5.27</logback-classic>
         <org.slf4j>2.0.17</org.slf4j>
         <hamcrest>3.0</hamcrest>
+        <rest-assured>6.0.1</rest-assured>
     </properties>
 
     <dependencies>
@@ -141,6 +142,18 @@
             <groupId>org.testcontainers</groupId>
             <artifactId>testcontainers-junit-jupiter</artifactId>
             <version>${testcontainers.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>rest-assured</artifactId>
+            <version>${rest-assured}</version> <!-- Use the latest version available -->
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>json-path</artifactId>
+            <version>${rest-assured}</version>
             <scope>test</scope>
         </dependency>
 

@@ -1,19 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 
+    <!-- 1. Konsol-udskrift -->
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>%msg%n</pattern>
+            <pattern>%d{HH:mm:ss} %-5level %logger{30} - %msg%n</pattern>
         </encoder>
     </appender>
 
-    <!-- Default level for everything -->
-    <root level="INFO">
-        <appender-ref ref="STDOUT"/>
-    </root>
+    <!-- 2. FEJL-LOG (Fil-udskrift med 7 dages rotering) -->
+    <appender name="ERROR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/artprompt_errors.log</file>
 
-    <!-- Silence noisy frameworks -->
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logs/artprompt_errors-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>7</maxHistory>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{30} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Dæmp alt det eksterne støj -->
     <logger name="org.hibernate" level="WARN"/>
     <logger name="org.testcontainers" level="WARN"/>
     <logger name="com.github.dockerjava" level="WARN"/>
+    <logger name="io.javalin" level="WARN"/>
+    <logger name="org.eclipse.jetty" level="WARN"/>
+    <logger name="com.zaxxer.hikari" level="WARN"/>
+
+    <!-- Egen 'app' pakke logger på INFO -->
+    <logger name="app" level="INFO"/>
+
+    <root level="INFO">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="ERROR_FILE"/>
+    </root>
 
 </configuration>
