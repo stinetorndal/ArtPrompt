@@ -3,7 +3,10 @@ package app.services;
 import app.dao.PromptWordDAO;
 import app.entities.PromptCategory;
 import app.entities.PromptWord;
+import app.exceptions.ApiException;
 import jakarta.persistence.EntityManagerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,6 +17,7 @@ import java.util.Random;
 //Kategori 1 må ikke genbruges i kategori 2
 public class PromptService {
 
+    private static final Logger logger = LoggerFactory.getLogger(PromptService.class);
     private final PromptWordDAO promptWordDAO;
     private final Random random = new Random();
 
@@ -38,9 +42,11 @@ public class PromptService {
         return availableCategories;
     }
     public PromptWord randomizeWordsFromPromptWordDAO(PromptCategory category){
+        logger.info("Udvælger tilfældigt ord for kategori: {}", category);
         List<PromptWord> wordsToBeRandomized= promptWordDAO.getWordByCategory(category);
         if (wordsToBeRandomized.isEmpty()) {
-            return null;
+            logger.warn("Der blev ikke fundet nogle ord i denne kategori: {}", category);
+            throw new ApiException(404, "Ingen ord fundet for den valgte kategori");
         }
         //randomize
             int randomIndex = random.nextInt(wordsToBeRandomized.size());

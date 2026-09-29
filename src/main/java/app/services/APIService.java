@@ -1,7 +1,10 @@
 package app.services;
 
+import app.exceptions.ApiException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -10,6 +13,7 @@ import java.net.http.HttpResponse;
 
 public class APIService {
 
+    private static final Logger logger = LoggerFactory.getLogger(APIService.class);
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     public String readAPI(String url) {
@@ -24,11 +28,15 @@ public class APIService {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
             if (response.statusCode() != 200) {
-                throw new RuntimeException("GET request failed. Status code: " + response.statusCode());
+                //Gemmes i logfil:
+                logger.error("Fejl ved kald til URL {}: status {}", url, response.statusCode());
+                throw new ApiException(500, "Kunne ikke hente data fra ekstern tjeneste");
             }
             return response.body();
         } catch (Exception e) {
-            throw new RuntimeException(e.getMessage(), e);
+            //Gem præcise fejl i logfil:
+            logger.error("Netværksfejl til URL {}: {}", url, e.getMessage());
+            throw new ApiException(500, "Der opstod en netværksfejl");
         }
     }
 
@@ -36,7 +44,8 @@ public class APIService {
         try {
             return objectMapper.readValue(json, tClass);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+            logger.error("Kunne ikke konvertere JSON til klasse {}: {}", tClass.getSimpleName(), e.getMessage());
+            throw new ApiException(500, "Fejl ved læsning af data fra serveren");
         }
     }
 

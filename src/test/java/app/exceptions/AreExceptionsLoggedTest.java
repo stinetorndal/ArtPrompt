@@ -63,12 +63,12 @@ public class AreExceptionsLoggedTest {
         assertTrue(containsExpectedLog, "Logfilen indeholder ikke forventet besked");
     }
 
-    //Starter server op, fanger den fejlen og returnerer den det korrekte json-format
+    //Checker om API svarer rigtigt, når jeg beder om noget, der ikke findes
     @Test
     void getPrompt_returns404WhenNotFound() {
 
         given()
-                .contentType("application/json")
+                .accept("application/json")
         .when()
                 .get("/api/v1/test-error") // Et ID der ikke findes
         .then()

@@ -3,9 +3,13 @@ package app.config;
 import app.dtos.MessageDTO;
 import app.exceptions.ApiException;
 import io.javalin.Javalin;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-//Konfigurerer og opretter Javalin-server + starter den  og returnerer app-instans
+
+//Konfigurerer og opretter Javalin-server + starter den og returnerer app-instans
 public class ApplicationConfig {
+    private static final Logger logger = LoggerFactory.getLogger(ApplicationConfig.class);
 
     public static Javalin startServer(int port) {
         Javalin app = Javalin.create(config -> {

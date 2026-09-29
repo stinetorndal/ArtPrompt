@@ -3,12 +3,17 @@ package app.services;
 import app.dtos.unsplash.PhotoDTO;
 import app.dtos.unsplash.SearchDTO;
 import app.entities.Color;
+import app.exceptions.ApiException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class UnsplashService {
+
+    private static final Logger logger = LoggerFactory.getLogger(UnsplashService.class);
     private APIService apiService = new APIService();
     private Random random = new Random();
 
@@ -34,11 +39,14 @@ public class UnsplashService {
             //Mapper til SearchDTO da json-response er et objekt
             SearchDTO response = apiService.fetchAndConvert(url, SearchDTO.class);
             if (response != null && response.getSearchResult() != null) {
+                logger.info("Hentede {} billeder fra Unsplash for farven {}", response.getSearchResult().size(), colorString);
                 return response.getSearchResult();
             }
         } catch (Exception e) {
-            throw new RuntimeException("Fejl ved hentning af billeder" + e.getMessage());
+            logger.error("Fejl ved netværkskald til URL {}: {}", url, e.getMessage());
+            throw new ApiException(500, "Fejl ved hentning af billeder");
         }
+        logger.warn("Svaret fra Unsplash indeholdt ingen billeder for farven {}", colorString);
         return new ArrayList<>();
 
     }

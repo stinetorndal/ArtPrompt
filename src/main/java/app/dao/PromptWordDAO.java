@@ -4,10 +4,13 @@ import app.entities.PromptCategory;
 import app.entities.PromptWord;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 public class PromptWordDAO {
+    private static final Logger logger = LoggerFactory.getLogger(PromptWordDAO.class);
 
     private final EntityManagerFactory emf;
 
