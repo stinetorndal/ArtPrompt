@@ -17,6 +17,8 @@ public class UserService {
         this.userDAO = userDAO;
     }
 
+
+
     public User createUser(String email, String rawPassword) {
         //Validér email
         if (!Validator.isEmailValid(email)) {
@@ -60,6 +62,7 @@ public class UserService {
             throw new ApiException(400, "Forkert email eller adgangskode");
         }
         //Returnér bruger hvis alt er ok
+        logger.info("Login lykkedes for email: {}", email);
         logger.info("Login lykkedes for email: {}", email);
         return user;
     }

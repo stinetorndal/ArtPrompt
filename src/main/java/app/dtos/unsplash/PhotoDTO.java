@@ -16,7 +16,7 @@ public class PhotoDTO {
     private String id; //Billedets eksterne id fra Unsplash. Skal bruges til check i db, om bruger allerede har billede
 
     @JsonProperty("user")
-    private UserDTO user;
+    private PhotographerDTO user;
 
     @JsonProperty("urls")
     private PictureUrlDTO url;
