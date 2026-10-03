@@ -17,14 +17,12 @@ public class Route {
         this.userController = userController;
     }
     public EndpointGroup getRoutes () {
-        return () -> {
-            path("/api/v1", () -> {  // fortæller det er api
-                path("/auth", () -> { //standard for Authentication = email + pw. Javalin sætter flg sammen:
-                    post("/register", userController::register);
-                    post("/login", userController::login);
-                });
+        return () -> path("/api/v1", () -> {  // fortæller det er api
+            path("/auth", () -> { //standard for Authentication = email + pw. Javalin sætter flg sammen:
+                post("/register", userController::register);
+                post("/login", userController::login);
             });
-        };
+        });
     }
     }
 

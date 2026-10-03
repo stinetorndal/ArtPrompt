@@ -2,7 +2,8 @@ package app.services;
 
 import app.config.HibernateConfig;
 import app.dao.UserDAO;
-import app.entities.User;
+import app.dtos.user.UserDTO;
+import app.exceptions.ApiException;
 import jakarta.persistence.EntityManagerFactory;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,7 +18,7 @@ class UserServiceTest {
 
     @BeforeAll
     static void setUpAll() {
-        emf = HibernateConfig.getEntityManagerFactory();
+        emf = HibernateConfig.getEntityManagerFactoryForTest();
     }
 
     @BeforeEach
@@ -29,107 +30,89 @@ class UserServiceTest {
     // POSITIV TEST: Bruger oprettes korrekt
     @Test
     void testCreateUserSuccess() {
-        System.out.println("------Bruger oprettes------");
+        System.out.println("------ Bruger oprettes ------");
         // Arrange
-        String email = "artprompt1@test.dk";
-        String validPassword = "Password1!";
+        UserDTO inputDTO = new UserDTO("testbruger@test.dk", "Password1!");
 
         // Act
-        User createdUser = userService.createUser(email, validPassword);
-        System.out.println(createdUser.getId() + ", " + createdUser.getEmail() + ", " + createdUser.getPassword());
+        UserDTO createdUser = userService.createUser(inputDTO);
+
         // Assert
         assertNotNull(createdUser);
-        assertNotNull(createdUser.getId());
-        assertEquals(email, createdUser.getEmail());
+        assertEquals("testbruger@test.dk", createdUser.getEmail());
 
-        // Check password er blevet hashed og IKKE gemt i klar tekst
-        assertNotEquals(validPassword, createdUser.getPassword());
-        assertTrue(createdUser.getPassword().startsWith("$2a$")); // BCrypt prefix
+        // Password skal være null i DTO retur af sikkerhedshensyn
+        assertNull(createdUser.getPassword());
     }
 
-    // NEGATIV TEST: Ugyldig e-mail kaster fejl
+    // NEGATIV TEST: Ugyldig e-mail kaster ApiException
     @Test
     void testCreateUserInvalidEmailThrowsException() {
         // Arrange
-        String invalidEmail = "hej.dk";
-        String validPassword = "Password1!";
+        UserDTO inputDTO = new UserDTO("hej.dk", "Password1!");
 
         // Act & Assert
-        IllegalArgumentException exception = assertThrows(
-                IllegalArgumentException.class,
-                () -> userService.createUser(invalidEmail, validPassword)
+        ApiException exception = assertThrows(
+                ApiException.class,
+                () -> userService.createUser(inputDTO)
         );
 
-        System.out.println("Forventet fejlmeddelelse: " + exception.getMessage());
+        assertEquals(400, exception.getCode());
         assertTrue(exception.getMessage().toLowerCase().contains("email"));
     }
 
-    // NEGATIV TEST: For svagt password kaster fejl
+    // NEGATIV TEST: For svagt password kaster ApiException
     @Test
     void testCreateUserWeakPasswordThrowsException() {
         // Arrange
-        String email = "artist2@test.dk";
-        String weakPassword = "hej";
+        UserDTO inputDTO = new UserDTO("testbruger@test.dk", "hej");
 
         // Act & Assert
-        IllegalArgumentException exception = assertThrows(
-                IllegalArgumentException.class,
-                () -> userService.createUser(email, weakPassword)
+        ApiException exception = assertThrows(
+                ApiException.class,
+                () -> userService.createUser(inputDTO)
         );
 
-        System.out.println("Forventet fejlmeddelelse: " + exception.getMessage());
-        assertTrue(exception.getMessage().contains("Adgangskode skal være mindst 8 tegn"));
+        assertEquals(400, exception.getCode());
+        assertTrue(exception.getMessage().contains("mindst 8 tegn"));
     }
 
-    @Test
-    void testLoginSucces() {
-        System.out.println("------positiv test / login ------");
-        //Arrange
-        String email = "test@test.dk";
-        String password = "Qwerty1!";
-        userService.createUser(email, password);
-        //act
-        User loggedInUser = userService.login(email, password);
-        //Print og assert
-        System.out.println("Login lykkedes for: "+  loggedInUser.getEmail());
-        assertNotNull(loggedInUser);
-        assertEquals(email, loggedInUser.getEmail());
-    }
-
+    // POSITIV TEST: Login lykkedes
     @Test
     void testLoginSuccess() {
-        System.out.println("\n--- POSITIV TEST: LOGIN ---");
+        System.out.println("------ POSITIV TEST: LOGIN ------");
 
-        // Arrange: Opretter først en bruger i DB
-        String email = "login@test.dk";
-        String password = "Password1!";
-        userService.createUser(email, password);
+        // Arrange: Opretter først bruger i DB
+        UserDTO inputDTO = new UserDTO("testbruger@test.dk", "Password1!");
+        userService.createUser(inputDTO);
 
-        // Act: Forsøger at logge ind med de rigtige oplysninger
-        User loggedInUser = userService.login(email, password);
+        // Act: Login med samme DTO
+        UserDTO loggedInUser = userService.login(inputDTO);
 
-        // Print & Assert
-        System.out.println("Login lykkedes for: " + loggedInUser.getEmail());
+        // Assert
         assertNotNull(loggedInUser);
-        assertEquals(email, loggedInUser.getEmail());
+        assertEquals("testbruger@test.dk", loggedInUser.getEmail());
+        assertNull(loggedInUser.getPassword()); // Sikrer at password ikke sendes med ud
     }
 
+    // NEGATIV TEST: Forkert password ved login kaster ApiException
     @Test
     void testLoginWrongPasswordThrowsException() {
-        System.out.println("------ negativ test / forkert pw ------");
+        System.out.println("------ NEGATIV TEST: FORKERT PW ------");
 
         // Arrange
-        String email = "test2@test.dk";
-        String password = "Password1!";
-        userService.createUser(email, password);
+        UserDTO originalUser = new UserDTO("testbruger2@test.dk", "Password1!");
+        userService.createUser(originalUser);
 
-        // Act & Assert: Forsøger login med forkert password
-        IllegalArgumentException exception = assertThrows(
-                IllegalArgumentException.class,
-                () -> userService.login(email, "ForkertPassword1!")
+        UserDTO wrongPasswordInput = new UserDTO("testbruger2@test.dk", "SkrevForkertPassword1!");
+
+        // Act & Assert
+        ApiException exception = assertThrows(
+                ApiException.class,
+                () -> userService.login(wrongPasswordInput)
         );
 
-        System.out.println("Fanget forventet fejl: " + exception.getMessage());
+        assertEquals(400, exception.getCode());
         assertTrue(exception.getMessage().contains("Forkert email eller adgangskode"));
     }
 }

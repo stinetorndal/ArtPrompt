@@ -1,8 +1,6 @@
 package app.controllers;
 
-import app.dtos.unsplash.PhotographerDTO;
 import app.dtos.user.UserDTO;
-import app.entities.User;
 import app.services.UserService;
 import io.javalin.http.Context;
 
@@ -11,28 +9,25 @@ public class UserController {
 
     private final UserService userService;
 
-    public UserController(UserService userService) { //Kan ikke instantiere fordi det kræver parameter (dao) og det sker ikke!
+    public UserController(UserService userService) { //Kan ikke instantiere den, fordi det kræver parameter (dao)
         this.userService = userService;
     }
 
     //HANDLER 1: registrering af bruger
     public void register(Context ctx) {
-        UserDTO userDTO = ctx.bodyAsClass(UserDTO.class);
+        UserDTO inputDTO = ctx.bodyAsClass(UserDTO.class);
+        UserDTO resultDTO = userService.createUser(inputDTO);
 
-        //Kalder Service
-        User createdUser = userService.createUser(userDTO.getEmail(), userDTO.getPassword());
-        //Send 201 created
-        ctx.status(201);
-        ctx.json(new UserDTO(createdUser.getEmail(), null)); //null fordi passwrod aldrig må sendes ud eller være i koden
-
-    }
+        ctx.status(201); //201 = created
+        ctx.json(resultDTO);
+        }
 
     //HANDLER 2: login
     public void login(Context ctx) {
-        UserDTO userDTO = ctx.bodyAsClass(UserDTO.class);
-        User loggedInUser = userService.login(userDTO.getEmail(), userDTO.getPassword());
+        UserDTO inputDTO = ctx.bodyAsClass(UserDTO.class);
+        UserDTO resultDTO = userService.login(inputDTO);
         //send 200 OK
         ctx.status(200);
-        ctx.json(new UserDTO(loggedInUser.getEmail(), null));
+        ctx.json(resultDTO);
     }
 }

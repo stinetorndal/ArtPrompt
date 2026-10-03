@@ -25,10 +25,11 @@ public class AppRunner {
 
 
     public void run() {
-        System.out.println("Henter 10 billeder fra Unsplash...\n");
+        //System.out.println("Henter 10 billeder fra Unsplash...\n");
         //Sæt farve her:
         //List<PhotoDTO> photoDTOList =unsplashService.getPicturesWithPickedColor(Color.BLUE);
         //printer.print10RandomPictures(photoDTOList);
+        System.out.println("Seeder databasen med initial data...");
         seeder.seed();
     }
 

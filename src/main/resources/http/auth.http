@@ -1,0 +1,26 @@
+### Registrer en ny bruger (Happy Path)
+POST http://localhost:7070/api/v1/auth/register
+Content-Type: application/json
+
+{
+  "email": "nytestbruger@test.dk",
+  "password": "Qwerty2026!"
+}
+
+### Login med ny bruger (Happy Path)
+POST http://localhost:7070/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "email": "nytestbruger@test.dk",
+  "password": "Qwerty2026!"
+}
+
+### Test Fejl: Registrer med ugyldig email
+POST http://localhost:7070/api/v1/auth/register
+Content-Type: application/json
+
+{
+  "email": "nytestbruger.dk",
+  "password": "qwerty26!"
+}
