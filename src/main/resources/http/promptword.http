@@ -1,0 +1,8 @@
+### Hent kategorier (Happy Path)
+GET http://localhost:7070/api/v1/prompts/categories
+
+### Hent kategorier (Happy Path) FEJLHÅNDTERING
+GET http://localhost:7070/api/v1/prompts/random
+
+### 3. Test med parametre i URL'en (Happy Path - forventer 200 OK)
+GET http://localhost:7070/api/v1/prompts/random?cat1=MOOD&cat2=ANIMALS

@@ -1,6 +1,7 @@
 package app.services;
 
 import app.dao.PromptWordDAO;
+import app.dtos.promptword.PromptWordDTO;
 import app.entities.PromptCategory;
 import app.entities.PromptWord;
 import app.exceptions.ApiException;
@@ -29,6 +30,13 @@ public class PromptService {
     //returnerer List<PromptCategory> med alle værdierne fra ENUM
     public List<PromptCategory> getAllCategories(){
         return Arrays.asList(PromptCategory.values());
+    }
+
+    public PromptWordDTO generatePromptWordDTO (PromptCategory cat1, PromptCategory cat2) {
+        PromptWord word1 = randomizeWordsFromPromptWordDAO(cat1);
+        PromptWord word2 = randomizeWordsFromPromptWordDAO(cat2);
+
+        return new PromptWordDTO(word1.getWord(), word2.getWord());
     }
 
     //returnerer alle kategorier minus den brugeren allerede har valgt

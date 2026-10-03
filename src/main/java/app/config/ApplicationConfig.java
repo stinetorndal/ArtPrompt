@@ -1,10 +1,12 @@
 package app.config;
 
+import app.controllers.PromptWordController;
 import app.controllers.UserController;
 import app.dao.UserDAO;
 import app.dtos.MessageDTO;
 import app.exceptions.ApiException;
 import app.routes.Route;
+import app.services.PromptService;
 import app.services.UserService;
 import io.javalin.Javalin;
 import jakarta.persistence.EntityManagerFactory;
@@ -25,7 +27,11 @@ public class ApplicationConfig {
         UserDAO userDAO = new UserDAO(emf);
         UserService userService = new UserService(userDAO);
         UserController userController = new UserController(userService);
-        Route route = new Route(userController);
+
+        PromptService promptService = new PromptService(emf);
+        PromptWordController promptWordController = new PromptWordController(promptService);
+
+        Route route = new Route(userController, promptWordController);
 
         // 2. Opret Javalin
         Javalin app = Javalin.create(config -> {
