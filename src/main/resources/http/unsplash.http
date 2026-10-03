@@ -1,0 +1,2 @@
+### Hent farver (Happy Path)
+GET http://localhost:7070/api/v1/unsplash/color?color=YELLOW

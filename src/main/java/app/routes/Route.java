@@ -1,6 +1,7 @@
 package app.routes;
 
 import app.controllers.PromptWordController;
+import app.controllers.UnsplashController;
 import app.controllers.UserController;
 
 import io.javalin.apibuilder.EndpointGroup;
@@ -15,10 +16,12 @@ public class Route {
 
     private final UserController userController;
     private final PromptWordController promptWordController;
+    private final UnsplashController unsplashController;
 
-    public Route(UserController userController, PromptWordController promptWordController) {
+    public Route(UserController userController, PromptWordController promptWordController, UnsplashController unsplashController) {
         this.userController = userController;
         this.promptWordController = promptWordController;
+        this.unsplashController = unsplashController;
     }
     public EndpointGroup getRoutes () {
         return () -> path("/api/v1", () -> {  // fortæller det er api
@@ -33,6 +36,11 @@ public class Route {
             path("/prompts", () -> {
                 get("/categories", promptWordController::getCategories);
                 get("/random", promptWordController::getRandomPrompt);
+            });
+
+            // Unsplash endpoints
+            path("/unsplash", () -> {
+                get("/color", unsplashController::getPicturesByColor);
             });
         });
     }

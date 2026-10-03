@@ -1,12 +1,14 @@
 package app.config;
 
 import app.controllers.PromptWordController;
+import app.controllers.UnsplashController;
 import app.controllers.UserController;
 import app.dao.UserDAO;
 import app.dtos.MessageDTO;
 import app.exceptions.ApiException;
 import app.routes.Route;
 import app.services.PromptService;
+import app.services.UnsplashService;
 import app.services.UserService;
 import io.javalin.Javalin;
 import jakarta.persistence.EntityManagerFactory;
@@ -31,7 +33,10 @@ public class ApplicationConfig {
         PromptService promptService = new PromptService(emf);
         PromptWordController promptWordController = new PromptWordController(promptService);
 
-        Route route = new Route(userController, promptWordController);
+        UnsplashService unsplashService = new UnsplashService();
+        UnsplashController unsplashController = new UnsplashController(unsplashService);
+
+        Route route = new Route(userController, promptWordController, unsplashController);
 
         // 2. Opret Javalin
         Javalin app = Javalin.create(config -> {
