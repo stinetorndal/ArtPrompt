@@ -1,6 +1,7 @@
 package app.routes;
 
 import app.controllers.PromptWordController;
+import app.controllers.SavedImageController;
 import app.controllers.UnsplashController;
 import app.controllers.UserController;
 
@@ -17,11 +18,14 @@ public class Route {
     private final UserController userController;
     private final PromptWordController promptWordController;
     private final UnsplashController unsplashController;
+    private final SavedImageController savedImageController;
 
-    public Route(UserController userController, PromptWordController promptWordController, UnsplashController unsplashController) {
+    public Route(UserController userController, PromptWordController promptWordController,
+                 UnsplashController unsplashController, SavedImageController savedImageController) {
         this.userController = userController;
         this.promptWordController = promptWordController;
         this.unsplashController = unsplashController;
+        this.savedImageController = savedImageController;
     }
     public EndpointGroup getRoutes () {
         return () -> path("/api/v1", () -> {  // fortæller det er api
@@ -41,6 +45,13 @@ public class Route {
             // Unsplash endpoints
             path("/unsplash", () -> {
                 get("/color", unsplashController::getPicturesByColor);
+            });
+
+            //SavedImage endpoints
+            path("/images", () -> {
+                get("/color", unsplashController::getPicturesByColor);
+                post("/save", savedImageController::saveImage);
+                get("/user/{userId}", savedImageController::getSavedImagesByUser);
             });
         });
     }

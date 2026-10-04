@@ -1,6 +1,7 @@
 package app.config;
 
 import app.controllers.PromptWordController;
+import app.controllers.SavedImageController;
 import app.controllers.UnsplashController;
 import app.controllers.UserController;
 import app.dao.UserDAO;
@@ -8,6 +9,7 @@ import app.dtos.MessageDTO;
 import app.exceptions.ApiException;
 import app.routes.Route;
 import app.services.PromptService;
+import app.services.SavedImageService;
 import app.services.UnsplashService;
 import app.services.UserService;
 import io.javalin.Javalin;
@@ -36,7 +38,10 @@ public class ApplicationConfig {
         UnsplashService unsplashService = new UnsplashService();
         UnsplashController unsplashController = new UnsplashController(unsplashService);
 
-        Route route = new Route(userController, promptWordController, unsplashController);
+        SavedImageService savedImageService = new SavedImageService(emf);
+        SavedImageController savedImageController = new SavedImageController(savedImageService);
+
+        Route route = new Route(userController, promptWordController, unsplashController, savedImageController);
 
         // 2. Opret Javalin
         Javalin app = Javalin.create(config -> {

@@ -1,0 +1,27 @@
+### 1. Gem et billede for en eksisterende bruger (sørg for at userId matcher en bruger i din DB)
+POST http://localhost:7070/api/v1/images/save
+Content-Type: application/json
+
+{
+  "url": "https://images.unsplash.com/photo-1579783902614-a3fb3927b675",
+  "externalId": "abc-123-unsplash",
+  "title": "Abstract Painting",
+  "source": "Unsplash",
+  "userId": 1
+}
+
+### Hent alle gemte billeder fra bruger
+GET http://localhost:7070/api/v1/images/user/1
+Content-Type: application/json
+
+### 3. Fejltest: Prøv at gemme et billede for en bruger der IKKE findes
+POST http://localhost:7070/api/v1/images/save
+Content-Type: application/json
+
+{
+  "url": "https://images.unsplash.com/photo-1579783902614-a3fb3927b675",
+  "externalId": "abc-123-unsplash",
+  "title": "Abstract Painting",
+  "source": "Unsplash",
+  "userId": 99
+}

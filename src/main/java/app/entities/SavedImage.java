@@ -1,6 +1,7 @@
 package app.entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -26,4 +27,12 @@ public class SavedImage {
     //Undgår uendelig løkke i ToString hvis student kalder course og omvendt
     @ToString.Exclude
     private User user;
+
+    public SavedImage(String url, String externalId, String title, String source, User user) {
+        this.url = url;
+        this.externalId = externalId;
+        this.title = title;
+        this.source = source;
+        this.user = user;
+    }
 }
