@@ -3,7 +3,6 @@ package app.services;
 import app.dao.UserDAO;
 import app.dtos.user.UserDTO;
 import app.entities.User;
-import app.exceptions.ApiException;
 import app.exceptions.UserAlreadyExistsException;
 import app.exceptions.ValidationException;
 import app.exceptions.WrongEmailOrPasswordException;

@@ -12,7 +12,7 @@ public class UserMapper {
         if (user == null){
             return null;
         }
-        return new UserDTO(user.getEmail(), null); //null for ikke at sende password med som json
+        return new UserDTO(user.getId(), user.getEmail(), null); //null for ikke at sende password med som json
     }
 
     //Fra DTO til entitet:
