@@ -20,12 +20,4 @@ public class SavedImageDTO {
     private String source;
     private Long userId;
 
-    public SavedImageDTO(SavedImage savedImage) { //hjælpekonstruktør til service-klassen
-        this.id = savedImage.getId();
-        this.url = savedImage.getUrl();
-        this.externalId = savedImage.getExternalId();
-        this.title = savedImage.getTitle();
-        this.source = savedImage.getSource();
-        this.userId = savedImage.getUser().getId();
-    }
-}
+   }

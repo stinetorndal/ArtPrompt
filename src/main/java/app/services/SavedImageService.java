@@ -6,6 +6,7 @@ import app.dtos.savedimages.SavedImageDTO;
 import app.entities.SavedImage;
 import app.entities.User;
 import app.exceptions.ApiException;
+import app.mappers.SavedImageMapper;
 import jakarta.persistence.EntityManagerFactory;
 
 import java.util.ArrayList;
@@ -15,10 +16,12 @@ public class SavedImageService {
 
     private final SavedImageDAO savedImageDAO;
     private final UserDAO userDAO;
+    private final SavedImageMapper savedImageMapper;
 
     public SavedImageService(EntityManagerFactory emf) {
         this.savedImageDAO = new SavedImageDAO(emf);
         this.userDAO = new UserDAO(emf);
+        this.savedImageMapper = new SavedImageMapper();
     }
 
     //slår bruger op via dto, opretter entitet, gemmer i DAO, returnerer savedImageDTO
@@ -28,27 +31,20 @@ public class SavedImageService {
         if (user == null) {
             throw new ApiException(404, "Brugeren blev ikke fundet med ID: " + dto.getUserId());
         }
-
         // 2. Opret entitet ud fra DTO og User
-        SavedImage imageToSave = new SavedImage(
-                dto.getUrl(),
-                dto.getExternalId(),
-                dto.getTitle(),
-                dto.getSource(),
-                user
-        );
+        SavedImage imageToSave = savedImageMapper.toEntity(dto, user);
+        //Gem i DB
         SavedImage savedEntity = savedImageDAO.create(imageToSave);
         //Returner som DTO
-        return new SavedImageDTO(savedEntity);
+        return savedImageMapper.toDTO(savedEntity);
     }
-
 
     //Henter liste af entiteter fra DAO og mapper dem
     public List<SavedImageDTO> getSavedImagesByUserId (Long userId) {
         List<SavedImage> images = savedImageDAO.findImagesByUserId(userId);
         List<SavedImageDTO> dtos = new ArrayList<>();
         for (SavedImage image : images){
-            dtos.add(new SavedImageDTO(image));
+            dtos.add(savedImageMapper.toDTO(image));
         }
         return dtos;
     }
