@@ -49,7 +49,6 @@ public class Route {
 
             //SavedImage endpoints
             path("/images", () -> {
-                get("/color", unsplashController::getPicturesByColor);
                 post("/save", savedImageController::saveImage);
                 get("/user/{userId}", savedImageController::getSavedImagesByUser);
             });
