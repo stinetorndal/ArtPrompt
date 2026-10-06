@@ -1,9 +1,6 @@
 package app.routes;
 
-import app.controllers.PromptWordController;
-import app.controllers.SavedImageController;
-import app.controllers.UnsplashController;
-import app.controllers.UserController;
+import app.controllers.*;
 
 import io.javalin.apibuilder.EndpointGroup;
 
@@ -19,13 +16,16 @@ public class Route {
     private final PromptWordController promptWordController;
     private final UnsplashController unsplashController;
     private final SavedImageController savedImageController;
+    private final NoteController noteController;
 
     public Route(UserController userController, PromptWordController promptWordController,
-                 UnsplashController unsplashController, SavedImageController savedImageController) {
+                 UnsplashController unsplashController, SavedImageController savedImageController,
+                 NoteController noteController) {
         this.userController = userController;
         this.promptWordController = promptWordController;
         this.unsplashController = unsplashController;
         this.savedImageController = savedImageController;
+        this.noteController= noteController;
     }
     public EndpointGroup getRoutes () {
         return () -> path("/api/v1", () -> {  // fortæller det er api
@@ -51,6 +51,12 @@ public class Route {
             path("/images", () -> {
                 post("/save", savedImageController::saveImage);
                 get("/user/{userId}", savedImageController::getSavedImagesByUser);
+            });
+
+            //Note endpoints
+            path("/notes", () -> {
+                post("/save", noteController::saveNote);
+                get("/user/{userId}", noteController::getSavedNotesByUser);
             });
         });
     }

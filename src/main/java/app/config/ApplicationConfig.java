@@ -1,17 +1,11 @@
 package app.config;
 
-import app.controllers.PromptWordController;
-import app.controllers.SavedImageController;
-import app.controllers.UnsplashController;
-import app.controllers.UserController;
+import app.controllers.*;
 import app.dao.UserDAO;
 import app.dtos.MessageDTO;
 import app.exceptions.ApiException;
 import app.routes.Route;
-import app.services.PromptService;
-import app.services.SavedImageService;
-import app.services.UnsplashService;
-import app.services.UserService;
+import app.services.*;
 import io.javalin.Javalin;
 import jakarta.persistence.EntityManagerFactory;
 import org.slf4j.Logger;
@@ -41,7 +35,10 @@ public class ApplicationConfig {
         SavedImageService savedImageService = new SavedImageService(emf);
         SavedImageController savedImageController = new SavedImageController(savedImageService);
 
-        Route route = new Route(userController, promptWordController, unsplashController, savedImageController);
+        NoteService noteService = new NoteService(emf);
+        NoteController noteController = new NoteController(noteService);
+
+        Route route = new Route(userController, promptWordController, unsplashController, savedImageController, noteController);
 
         // 2. Opret Javalin
         Javalin app = Javalin.create(config -> {
