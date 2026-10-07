@@ -1,7 +1,7 @@
 package app.dao;
 
-import app.dtos.savedimages.SavedImageDTO;
-import app.entities.SavedImage;
+import app.dtos.savedpaintings.SavedPaintingDTO;
+import app.entities.SavedPainting;
 import app.entities.User;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
@@ -11,43 +11,43 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-public class SavedImageDAO implements IDAO<SavedImage, Long> {
+
+public class SavedPaintingDAO implements IDAO<SavedPainting, Long> {
 
     private static final Logger logger = LoggerFactory.getLogger(SavedImageDAO.class);
     private final EntityManagerFactory emf;
 
-    public SavedImageDAO(EntityManagerFactory emf) {
+    public SavedPaintingDAO(EntityManagerFactory emf) {
         this.emf = emf;
     }
-
     @Override
-    public SavedImage create(SavedImage savedImage) {
+    public SavedPainting create(SavedPainting savedPainting) {
         EntityManager em = emf.createEntityManager();
         try {
             em.getTransaction().begin();
-            em.persist(savedImage);
+            em.persist(savedPainting);
             em.getTransaction().commit();
-            return savedImage;
+            return savedPainting;
         } finally {
             em.close();
         }
     }
 
     @Override
-    public SavedImage findById(Long id) {
+    public SavedPainting findById(Long id) {
         EntityManager em = emf.createEntityManager();
         try {
-            return em.find(SavedImage.class, id);
+            return em.find(SavedPainting.class, id);
         } finally {
             em.close();
         }
     }
 
     @Override
-    public List<SavedImage> findAll() {
+    public List<SavedPainting> findAll() {
         EntityManager em = emf.createEntityManager();
         try {
-            TypedQuery<SavedImage> query = em.createQuery("SELECT s FROM SavedImage s", SavedImage.class);
+            TypedQuery<SavedPainting> query = em.createQuery("SELECT s FROM SavedPainting s", SavedPainting.class);
             return query.getResultList();
         } finally {
             em.close();
@@ -55,13 +55,13 @@ public class SavedImageDAO implements IDAO<SavedImage, Long> {
     }
 
     @Override
-    public SavedImage update(SavedImage savedImage) {
+    public SavedPainting update(SavedPainting savedPainting) {
         EntityManager em = emf.createEntityManager();
         try {
             em.getTransaction().begin();
-            SavedImage updatedSavedImage = em.merge(savedImage);
+            SavedPainting updatedSavedPainting = em.merge(savedPainting);
             em.getTransaction().commit();
-            return updatedSavedImage;
+            return updatedSavedPainting;
         } finally {
             em.close();
         }
@@ -72,11 +72,11 @@ public class SavedImageDAO implements IDAO<SavedImage, Long> {
         EntityManager em = emf.createEntityManager();
         try {
             em.getTransaction().begin();
-            SavedImage savedImage = em.find(SavedImage.class, id);
+            SavedPainting savedPainting = em.find(SavedPainting.class, id);
             boolean isDeleted = false;
 
-            if (savedImage != null) {
-                em.remove(savedImage);
+            if (savedPainting != null) {
+                em.remove(savedPainting);
                 isDeleted = true;
             }
 
@@ -88,27 +88,28 @@ public class SavedImageDAO implements IDAO<SavedImage, Long> {
     }
 
     //Hent alle gemte billeder fra speciifik bruger
-    public List<SavedImage> findImagesByUserId(Long userId) {
+    public List<SavedPainting> findPaintingsByUserId (Long userId){
         try (EntityManager em = emf.createEntityManager()) {
-            TypedQuery<SavedImage> query = em.createQuery(
-                    "SELECT s FROM SavedImage s WHERE s.user.id = :userId", SavedImage.class);
+            TypedQuery<SavedPainting> query = em.createQuery(
+                    "SELECT s " +
+                            "FROM SavedPainting s " +
+                            "   WHERE s.user.id = :userId", SavedPainting.class);
             query.setParameter("userId", userId);
             return query.getResultList();
-        }
+                    }
     }
 
     //Er maleri allerede gemt af denne bruger?
-    public boolean hasImageAlreadyBeenSavedByThisUserId(String externalId, Long userId) {
+    public boolean hasPaintingAlreadyBeenSavedByThisUserId (String externalId, Long userId){
         try (EntityManager em = emf.createEntityManager()) {
             TypedQuery<Long> query = em.createQuery(
                     "SELECT COUNT (s) " +
-                            "FROM SavedImage s " +
-                            "WHERE s.externalId = :externalId " +
-                            "AND s.user.id = :userId", Long.class);
+                            "FROM SavedPainting s " +
+                            "WHERE s.externalId = :externalId AND s.user.id = :userId", Long.class);
             query.setParameter("externalId", externalId);
             query.setParameter("userId", userId);
             Long count = query.getSingleResult();
-            return count > 0;
+            return count >0;
         }
     }
 }
