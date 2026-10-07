@@ -1,11 +1,10 @@
 package app.entities;
 
 public enum ArtistCategory {
-    APPEL("Karen Appel"),
+    APPEL("Karel Appel"),
     AVERCAMP("Hendrick Avercamp"),
     BOLLONGIER("Hans Bollongier"),
     BRUEGHEL("Jan Brueghel"),
-    COORTE("Adriaen Coorte"),
     GIJSELAAR("M. de Gijselaar"),
     HIROSHIGE("Utagawa Hiroshige (I)"),
     ISRAELS("Jozef Israëls"),
