@@ -4,6 +4,7 @@ import app.controllers.*;
 import app.dao.UserDAO;
 import app.dtos.MessageDTO;
 import app.exceptions.ApiException;
+import app.mappers.SavedPaintingMapper;
 import app.routes.Route;
 import app.services.*;
 import io.javalin.Javalin;
@@ -16,7 +17,6 @@ import org.slf4j.LoggerFactory;
 //Controller er kun handler
 public class ApplicationConfig {
     private static final Logger logger = LoggerFactory.getLogger(ApplicationConfig.class);
-
 
     public static Javalin startServer(int port) {
 
@@ -38,7 +38,12 @@ public class ApplicationConfig {
         NoteService noteService = new NoteService(emf);
         NoteController noteController = new NoteController(noteService);
 
-        Route route = new Route(userController, promptWordController, unsplashController, savedImageController, noteController);
+        RijksmuseumService rijksmuseumService = new RijksmuseumService();
+        SavedPaintingMapper savedPaintingMapper = new SavedPaintingMapper();
+        RijksmuseumController rijksmuseumController = new RijksmuseumController(rijksmuseumService, savedPaintingMapper);
+
+        Route route = new Route(userController, promptWordController, unsplashController,
+                savedImageController, noteController, rijksmuseumController);
 
         // 2. Opret Javalin
         Javalin app = Javalin.create(config -> {

@@ -17,15 +17,17 @@ public class Route {
     private final UnsplashController unsplashController;
     private final SavedImageController savedImageController;
     private final NoteController noteController;
+    private final RijksmuseumController rijksmuseumController;
 
     public Route(UserController userController, PromptWordController promptWordController,
                  UnsplashController unsplashController, SavedImageController savedImageController,
-                 NoteController noteController) {
+                 NoteController noteController, RijksmuseumController rijksmuseumController) {
         this.userController = userController;
         this.promptWordController = promptWordController;
         this.unsplashController = unsplashController;
         this.savedImageController = savedImageController;
         this.noteController= noteController;
+        this.rijksmuseumController = rijksmuseumController;
     }
     public EndpointGroup getRoutes () {
         return () -> path("/api/v1", () -> {  // fortæller det er api
@@ -57,6 +59,10 @@ public class Route {
             path("/notes", () -> {
                 post("/save", noteController::saveNote);
                 get("/user/{userId}", noteController::getSavedNotesByUser);
+            });
+            // Rijksmuseum endpoints
+            path("/rijksmuseum", () -> {
+                get("/artist", rijksmuseumController::getPaintingsByArtist);
             });
         });
     }

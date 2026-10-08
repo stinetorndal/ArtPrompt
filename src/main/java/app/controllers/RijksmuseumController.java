@@ -25,7 +25,7 @@ public class RijksmuseumController {
         this.savedPaintingMapper = savedPaintingMapper;
     }
 
-    // GET /api/rijksmuseum/paintings?artist=REMBRANDT
+    // GET /api/v1/rijksmuseum/artist?artist=REMBRANDT
     public void getPaintingsByArtist(Context ctx) {
         ArtistCategory category = RequestUtil.getEnumQueryParam(ctx, "artist", ArtistCategory.class);
 
