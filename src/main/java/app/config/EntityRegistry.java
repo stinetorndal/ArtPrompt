@@ -1,10 +1,7 @@
 package app.config;
 
 
-import app.entities.Note;
-import app.entities.PromptWord;
-import app.entities.SavedImage;
-import app.entities.User;
+import app.entities.*;
 import org.hibernate.cfg.Configuration;
 
 final class EntityRegistry {
@@ -16,6 +13,7 @@ final class EntityRegistry {
         configuration.addAnnotatedClass(Note.class);
         configuration.addAnnotatedClass(PromptWord.class);
         configuration.addAnnotatedClass(SavedImage.class);
+        configuration.addAnnotatedClass(SavedPainting.class);
         // TODO: Add more entities here...
     }
 }

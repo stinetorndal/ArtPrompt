@@ -4,11 +4,15 @@ import app.dtos.promptword.PromptWordDTO;
 import app.entities.PromptCategory;
 import app.exceptions.ApiException;
 import app.services.PromptService;
+import app.utils.RequestUtil;
 import io.javalin.http.Context;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 public class PromptWordController {
+    private static final Logger logger = LoggerFactory.getLogger(PromptWordController.class);
     private final PromptService promptService;
 
     public PromptWordController(PromptService promptService) {
@@ -22,21 +26,13 @@ public class PromptWordController {
 
     public void getRandomPrompt(Context ctx) {
         // 1. Hent brugerens valg fra URL'en (query parameters)
-        String cat1Param = ctx.queryParam("cat1");
-        String cat2Param = ctx.queryParam("cat2");
+        PromptCategory cat1 = RequestUtil.getEnumQueryParam(ctx, "cat1", PromptCategory.class);
+        PromptCategory cat2 = RequestUtil.getEnumQueryParam(ctx, "cat2", PromptCategory.class);
 
-        // 2. Check om brugeren har glemt at vælge kategorier
-        if (cat1Param == null || cat2Param == null) {
-            //Ingen logger, brugeren modtager fejlsvar
-            throw new ApiException(400, "Vælg venligst to kategorier (cat1 og cat2)");
-        }
-
-        // 3. Konverter strengene fra URL'en til PromptCategory Enums
-        PromptCategory cat1 = PromptCategory.valueOf(cat1Param.toUpperCase());
-        PromptCategory cat2 = PromptCategory.valueOf(cat2Param.toUpperCase());
 
         // 4. Generer DTO ud fra brugerens kategori-valg
         PromptWordDTO dto = promptService.generatePromptWordDTO(cat1, cat2);
+        logger.info("Genererede prompt-ord for kategorierne {} og {}", cat1.name(), cat2.name());
         ctx.status(200).json(dto);
     }
 }

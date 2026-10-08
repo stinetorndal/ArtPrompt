@@ -18,8 +18,7 @@ public class UserController {
         UserDTO inputDTO = ctx.bodyAsClass(UserDTO.class);
         UserDTO resultDTO = userService.createUser(inputDTO);
 
-        ctx.status(201); //201 = created
-        ctx.json(resultDTO);
+        ctx.status(201).json(resultDTO);
         }
 
     //HANDLER 2: login
@@ -27,7 +26,6 @@ public class UserController {
         UserDTO inputDTO = ctx.bodyAsClass(UserDTO.class);
         UserDTO resultDTO = userService.login(inputDTO);
         //send 200 OK
-        ctx.status(200);
-        ctx.json(resultDTO);
+        ctx.status(200).json(resultDTO);
     }
 }

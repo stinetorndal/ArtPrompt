@@ -48,7 +48,5 @@ public class UnsplashService {
         }
         logger.warn("Svaret fra Unsplash indeholdt ingen billeder for farven {}", colorString);
         return new ArrayList<>();
-
     }
-
 }

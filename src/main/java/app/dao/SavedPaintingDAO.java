@@ -112,6 +112,7 @@ public class SavedPaintingDAO implements IDAO<SavedPainting, Long> {
             return count >0;
         }
     }
+
 }
 
 

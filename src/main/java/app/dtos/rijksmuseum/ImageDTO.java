@@ -4,17 +4,17 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
 @JsonIgnoreProperties(ignoreUnknown = true)
-// Modtager listen fra søgningen der kun indeholder id
-public class SearchPainterDTO {
+// Håndterer selve image-objektet med contentUrl
+public class ImageDTO {
 
-    @JsonProperty("orderedItems")
-    private List<PaintingReferenceDTO> searchResults;
+    @JsonProperty("contentUrl")
+    private String contentUrl;
 }

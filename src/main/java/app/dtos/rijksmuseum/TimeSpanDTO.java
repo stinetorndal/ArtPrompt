@@ -6,15 +6,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-// Modtager listen fra søgningen der kun indeholder id
-public class SearchPainterDTO {
+// griber startdato. I Rijksmuseum ligger info pakket ind i objekter der er pakket ind i 0bjekter
+public class TimeSpanDTO {
 
-    @JsonProperty("orderedItems")
-    private List<PaintingReferenceDTO> searchResults;
+    @JsonProperty("begin_of_the_begin")
+    private String beginOfTheBegin;
 }

@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Scanner;
 
+//Hele denne package er lavet så jeg kan huske, hvad jeg skal i frontend
 public class TextUI {
 
     private static final Logger logger = LoggerFactory.getLogger(TextUI.class);

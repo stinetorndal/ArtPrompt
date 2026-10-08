@@ -1,5 +1,7 @@
 package app.dtos.rijksmuseum;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,9 +10,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-
+// Modtager id-url på det enkelte maleri fra søgningen
 public class PaintingReferenceDTO {
-    // Modtager id-url ("https://id.rijksmuseum.nl/200106038") på det enkelte maleri i søgningen
-    private String id;
 
+    @JsonProperty("id")
+    private String id;
 }

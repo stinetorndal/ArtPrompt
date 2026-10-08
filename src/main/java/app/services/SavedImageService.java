@@ -8,12 +8,14 @@ import app.entities.User;
 import app.exceptions.ApiException;
 import app.mappers.SavedImageMapper;
 import jakarta.persistence.EntityManagerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SavedImageService {
-
+    private static final Logger logger = LoggerFactory.getLogger(SavedImageService.class);
     private final SavedImageDAO savedImageDAO;
     private final UserDAO userDAO;
     private final SavedImageMapper savedImageMapper;
@@ -33,17 +35,28 @@ public class SavedImageService {
         }
         // 2. Opret entitet ud fra DTO og User
         SavedImage imageToSave = savedImageMapper.toEntity(dto, user);
+        // 2. Sikkerhedsventil: Check om maleriet allerede er gemt af denne bruger
+        boolean alreadySaved = savedImageDAO.hasImageAlreadyBeenSavedByThisUserId(
+                dto.getExternalId(),
+                dto.getUserId()
+        );
+        if (alreadySaved) {
+            logger.warn("Forsøg på at gemme dublet; externalId '{}' er allerede gemt for user ID {}",
+                    dto.getExternalId(), dto.getUserId());
+            throw new ApiException(400, "Dette maleri er allerede gemt på din liste.");
+        }
         //Gem i DB
         SavedImage savedEntity = savedImageDAO.create(imageToSave);
         //Returner som DTO
         return savedImageMapper.toDTO(savedEntity);
     }
 
+
     //Henter liste af entiteter fra DAO og mapper dem
-    public List<SavedImageDTO> getSavedImagesByUserId (Long userId) {
+    public List<SavedImageDTO> getSavedImagesByUserId(Long userId) {
         List<SavedImage> images = savedImageDAO.findImagesByUserId(userId);
         List<SavedImageDTO> dtos = new ArrayList<>();
-        for (SavedImage image : images){
+        for (SavedImage image : images) {
             dtos.add(savedImageMapper.toDTO(image));
         }
         return dtos;
