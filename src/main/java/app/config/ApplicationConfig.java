@@ -42,8 +42,11 @@ public class ApplicationConfig {
         SavedPaintingMapper savedPaintingMapper = new SavedPaintingMapper();
         RijksmuseumController rijksmuseumController = new RijksmuseumController(rijksmuseumService, savedPaintingMapper);
 
+        SavedPaintingService savedPaintingService = new SavedPaintingService(emf);
+        SavedPaintingController savedPaintingController = new SavedPaintingController(savedPaintingService);
+
         Route route = new Route(userController, promptWordController, unsplashController,
-                savedImageController, noteController, rijksmuseumController);
+                savedImageController, noteController, rijksmuseumController, savedPaintingController);
 
         // 2. Opret Javalin
         Javalin app = Javalin.create(config -> {
