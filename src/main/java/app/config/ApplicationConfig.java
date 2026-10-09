@@ -45,6 +45,8 @@ public class ApplicationConfig {
         SavedPaintingService savedPaintingService = new SavedPaintingService(emf);
         SavedPaintingController savedPaintingController = new SavedPaintingController(savedPaintingService);
 
+        SecurityController securityController = new SecurityController();
+
         Route route = new Route(userController, promptWordController, unsplashController,
                 savedImageController, noteController, rijksmuseumController, savedPaintingController);
 
@@ -52,6 +54,10 @@ public class ApplicationConfig {
         Javalin app = Javalin.create(config -> {
             config.router.apiBuilder(route.getRoutes());
         });
+
+        // 2. Tilknyt sikkerhedscheck efter oprettelsen af app
+        app.beforeMatched(securityController::authenticate);
+        app.beforeMatched(securityController::authorize);
 
 
         // Globale exception handling

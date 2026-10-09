@@ -9,7 +9,7 @@ import static io.javalin.apibuilder.ApiBuilder.get;
 import static io.javalin.apibuilder.ApiBuilder.post;
 
 //Her ligger alle routes og controllerne instantieres, applikationens vejkort
-//Route er bindelig mellem controller og Javalin-server
+//Route er bindeled mellem controller og Javalin-server
 public class Route {
 
     private final UserController userController;
@@ -37,43 +37,43 @@ public class Route {
 
             //auth-endpoints = email+login
             path("/auth", () -> { //standard for Authentication = email + pw. Javalin sætter flg sammen:
-                post("/register", userController::register);
-                post("/login", userController::login);
+                post("/register", userController::register, Role.ANYONE);
+                post("/login", userController::login, Role.ANYONE);
             });
 
             // Prompt endpoints
             path("/prompts", () -> {
-                get("/categories", promptWordController::getCategories);
-                get("/random", promptWordController::getRandomPrompt);
+                get("/categories", promptWordController::getCategories, Role.ANYONE);
+                get("/random", promptWordController::getRandomPrompt, Role.ANYONE);
             });
 
             // Unsplash endpoints
             path("/unsplash", () -> {
-                get("/color", unsplashController::getPicturesByColor);
+                get("/color", unsplashController::getPicturesByColor, Role.ANYONE);
             });
 
             //SavedImage endpoints
             path("/images", () -> {
-                post("/save", savedImageController::saveImage);
-                get("/user/{userId}", savedImageController::getSavedImagesByUser);
+                post("/save", savedImageController::saveImage,Role.USER, Role.ADMIN);
+                get("/user/{userId}", savedImageController::getSavedImagesByUser, Role.USER, Role.ADMIN);
             });
 
             //Note endpoints
             path("/notes", () -> {
-                post("/save", noteController::saveNote);
-                get("/user/{userId}", noteController::getSavedNotesByUser);
+                post("/save", noteController::saveNote,Role.USER, Role.ADMIN);
+                get("/user/{userId}", noteController::getSavedNotesByUser, Role.USER, Role.ADMIN);
             });
 
             // Rijksmuseum endpoints
             path("/rijksmuseum", () -> {
-                get("/artist", rijksmuseumController::getPaintingsByArtist);
+                get("/artist", rijksmuseumController::getPaintingsByArtist, Role.ANYONE);
             });
 
             //SavedPainting endpoints
             path("/paintings", () -> {
-                post("/save", savedPaintingController::savePainting);
-                get("/user/{userId}", savedPaintingController::getSavedPaintingsByUser);
-                get("/random", savedPaintingController::getRandomPaintings);
+                post("/save", savedPaintingController::savePainting,Role.USER, Role.ADMIN);
+                get("/user/{userId}", savedPaintingController::getSavedPaintingsByUser, Role.USER, Role.ADMIN);
+                get("/random", savedPaintingController::getRandomPaintings, Role.ANYONE);
             });
         });
     }
