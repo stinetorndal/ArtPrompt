@@ -65,6 +65,12 @@ public class ApplicationConfig {
             ctx.status(e.getCode());
             ctx.json(new MessageDTO(e.getMessage()));
         });
+        // Fanger alle uventede exceptions og logger dem med fuldt stacktrace
+        app.exception(Exception.class, (e, ctx) -> {
+            logger.error("Uventet serverfejl på rute {}: ", ctx.path(), e);
+            ctx.status(500);
+            ctx.json(new MessageDTO("Der opstod en intern serverfejl"));
+        });
 
         return app.start(port);
     }

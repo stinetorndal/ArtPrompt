@@ -1,7 +1,7 @@
 package app.entities;
 
+import app.routes.Role;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -13,25 +13,27 @@ import java.util.List;
 @Table(name = "users")
 @Getter
 @NoArgsConstructor
-@ToString
+@ToString(exclude = {"password", "notes", "images"})
 public class User {
     @Id
-    //DB opretter selv id og styrer det via egen tæller. Svarer til SERIAL
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String email;
     private String password;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role role = Role.USER;
+
     @OneToMany(mappedBy = "user")
-    //Relation til User-objekt så JAP/Hibernate ved, note hører til bruger
     private List<Note> notes = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
-    //Relation til User-objekt så JAP/Hibernate ved, note hører til bruger
     private List<SavedImage> images = new ArrayList<>();
 
     public User(String email, String password) {
         this.email = email;
         this.password = password;
+        // role bliver automatisk USER via standardværdien ovenfor
     }
 }

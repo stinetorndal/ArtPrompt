@@ -1,0 +1,46 @@
+### 1. Registrerer bruger  for at få fat i token
+POST http://localhost:7070/api/v1/auth/register
+Content-Type: application/json
+
+{
+  "email": "testbruger@test.dk",
+  "password": "26_IamdeadINside"
+}
+> {%
+    // Gemmer token fra svaret i en variabel til næste anmodning
+    client.global.set("auth_token", response.body.token);
+%}
+
+### 2. Login bruger  for at få fat i token - kør evt denne først som test
+POST http://localhost:7070/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "email": "testbruger@test.dk",
+  "password": "26_IamdeadINside"
+}
+> {%
+    // Gemmer token fra svaret i en variabel til næste anmodning
+    client.global.set("auth_token", response.body.token);
+%}
+
+
+### 3. Kald beskyttet endpoint med token i header
+GET http://localhost:7070/api/v1/paintings/user/6
+Authorization: Bearer {{auth_token}}
+
+### 4. Gem maleri MED token
+POST http://localhost:7070/api/v1/paintings/save
+Authorization: Bearer {{auth_token}}
+Content-Type: application/json
+
+{
+  "userId": 6,
+  "externalId": "SK-C-5",
+  "title": "Nattevagten",
+  "artist": "Rembrandt van Rijn",
+  "imageUrl": "https://lh3.googleusercontent.com/...",
+  "description": "Et fantastisk værk"
+}
+
+###
