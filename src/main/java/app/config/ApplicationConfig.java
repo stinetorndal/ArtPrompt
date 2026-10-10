@@ -47,6 +47,8 @@ public class ApplicationConfig {
 
         SecurityController securityController = new SecurityController();
 
+        RateLimitController rateLimitController = new RateLimitController();
+
         Route route = new Route(userController, promptWordController, unsplashController,
                 savedImageController, noteController, rijksmuseumController, savedPaintingController);
 
@@ -55,7 +57,10 @@ public class ApplicationConfig {
             config.router.apiBuilder(route.getRoutes());
         });
 
-        // 2. Tilknyt sikkerhedscheck efter oprettelsen af app
+        // 3. Global Rate Limiting på alle API'routes
+        app.before("/api/*", rateLimitController::handleRateLimit);
+
+        // 4. Tilknyt sikkerhedscheck efter oprettelsen af app
         app.beforeMatched(securityController::authenticate);
         app.beforeMatched(securityController::authorize);
 
