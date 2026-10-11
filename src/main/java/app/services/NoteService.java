@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NoteService {
-      private final NoteDAO noteDAO;
+    private final NoteDAO noteDAO;
     private final UserDAO userDAO;
     private final NoteMapper noteMapper;
 
@@ -41,10 +41,10 @@ public class NoteService {
 
 
     //Henter liste af entiteter fra DAO og mapper dem
-    public List<NoteDTO> getSavedNotesByUserId (Long userId) {
+    public List<NoteDTO> getSavedNotesByUserId(Long userId) {
         List<Note> notes = noteDAO.findNotesByUserId(userId);
         List<NoteDTO> dtos = new ArrayList<>();
-        for (Note note : notes){
+        for (Note note : notes) {
             dtos.add(noteMapper.toDTO(note));
         }
         return dtos;

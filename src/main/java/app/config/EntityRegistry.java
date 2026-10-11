@@ -14,6 +14,7 @@ final class EntityRegistry {
         configuration.addAnnotatedClass(PromptWord.class);
         configuration.addAnnotatedClass(SavedImage.class);
         configuration.addAnnotatedClass(SavedPainting.class);
-        // TODO: Add more entities here...
+        configuration.addAnnotatedClass(Painting.class);
+        // Add more entities here...
     }
 }

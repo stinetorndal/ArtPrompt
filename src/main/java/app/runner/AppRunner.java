@@ -23,12 +23,12 @@ public class AppRunner {
     PromptWordSeeder seeder = new PromptWordSeeder(emf);
 
 
-    public void run() {
-        System.out.println("Seeder databasen med initial data...");
-        seeder.seed();
+   // public void run() {
+     //   System.out.println("Seeder databasen med initial data...");
+       // seeder.seed();
 
 
-        System.out.println("=== TEST 1: Henter ID'er for Rembrandt ===");
+       /* System.out.println("=== TEST 1: Henter ID'er for Rembrandt ===");
         ArtistCategory testArtist = ArtistCategory.REMBRANDT;
 
         List<String> ids = service.fetchPaintingsIdsByArtist(testArtist);
@@ -47,5 +47,7 @@ public class AppRunner {
 
             }
         }
+
+        */
     }
 }

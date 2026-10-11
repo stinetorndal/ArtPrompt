@@ -20,6 +20,7 @@ public class Route {
     private final RijksmuseumController rijksmuseumController;
     private final SavedPaintingController savedPaintingController;
 
+
     public Route(UserController userController, PromptWordController promptWordController,
                  UnsplashController unsplashController, SavedImageController savedImageController,
                  NoteController noteController, RijksmuseumController rijksmuseumController,
@@ -31,7 +32,7 @@ public class Route {
         this.noteController= noteController;
         this.rijksmuseumController = rijksmuseumController;
         this.savedPaintingController = savedPaintingController;
-    }
+         }
     public EndpointGroup getRoutes () {
         return () -> path("/api/v1", () -> {  // fortæller det er api
 
@@ -67,6 +68,7 @@ public class Route {
             // Rijksmuseum endpoints
             path("/rijksmuseum", () -> {
                 get("/artist", rijksmuseumController::getPaintingsByArtist, Role.ANYONE);
+                get("/fetch-all", rijksmuseumController::fetchAllConcurrently, Role.ANYONE);
             });
 
             // paintings endpoint - offentligt endpoint, henter malerier fra DB
