@@ -69,12 +69,15 @@ public class Route {
                 get("/artist", rijksmuseumController::getPaintingsByArtist, Role.ANYONE);
             });
 
+            // paintings endpoint - offentligt endpoint, henter malerier fra DB
+            path("/paintings", () -> {
+                get("/random", savedPaintingController::getRandomPaintings, Role.ANYONE);
+            });
             //SavedPainting endpoints
             path("/paintings", () -> {
                 post("/save", savedPaintingController::savePainting,Role.USER, Role.ADMIN);
                 get("/user/{userId}", savedPaintingController::getSavedPaintingsByUser, Role.USER, Role.ADMIN);
-                get("/random", savedPaintingController::getRandomPaintings, Role.ANYONE);
-            });
+                 });
         });
     }
     }

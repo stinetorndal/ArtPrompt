@@ -1,0 +1,27 @@
+### 1. Login og gem token automatisk
+POST http://localhost:7070/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "email": "testbruger@test.dk",
+  "password": "26_IamdeadINside"
+}
+
+> {%
+    client.global.set("auth_token", response.body.token);
+%}
+
+### 2. Gem note med Authorization-header
+POST http://localhost:7070/api/v1/notes/save
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
+{
+  "text": "Skrøbelig kvindeform, stærke/kraftige blomster",
+  "userId": 6
+}
+
+### Hent alle gemte noter fra bruger
+GET http://localhost:7070/api/v1/notes/user/6
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}

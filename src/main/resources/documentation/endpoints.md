@@ -17,3 +17,5 @@ Base URL: `http://localhost:7070`
 | **POST**  | `/api/v1/paintings/save`                                             | `SavedPaintingDTO`         | `SavedPaintingDTO`           | `(e4/e1)` not found / bad request
 | **GET**   | `/api/v1/paintings/user/{userid}`                                    |                            | `List<SavedPainting> `       | `(e4)` not found
 | **GET**   | `/api/v1/paintings/random`                                           |                            | `List<SavedPaintingDTO>`     | `(e4/e1)` not found / bad request
+
+

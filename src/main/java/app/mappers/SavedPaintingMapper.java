@@ -19,9 +19,9 @@ public class SavedPaintingMapper {
 
         return new SavedPaintingDTO(
                 paintingDTO.getId(),
-                url,
                 paintingDTO.getTitle(),
                 artist,
+                url,
                 parseYear(paintingDTO.getDateCreated()),
                 null
         );
@@ -44,9 +44,9 @@ public class SavedPaintingMapper {
     //Når DTO kaldes skal parametre stå i præcis samme rækkefølge som i DTO
         return new SavedPaintingDTO(
                 painting.getExternalId(),
-                painting.getUrl(),
                 painting.getTitle(),
                 painting.getArtist(),
+                painting.getUrl(),
                 painting.getYear(),
                 userId
         );
@@ -57,9 +57,9 @@ public class SavedPaintingMapper {
 
         SavedPainting painting = new SavedPainting();
         painting.setExternalId(dto.getExternalId());
-        painting.setUrl(dto.getUrl());
         painting.setTitle(dto.getTitle());
         painting.setArtist(dto.getArtist());
+        painting.setUrl(dto.getUrl());
         painting.setYear(dto.getYear());
         painting.setUser(user); // JPA bruger kun user.getId() til fremmednøglen i DB
         return painting;
