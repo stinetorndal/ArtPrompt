@@ -51,4 +51,25 @@ public class PaintingDTO {
         }
         return "Unknown Year";
     }
+
+    // Hjælpemetode til at hente billedets URL
+    public String getImageUrl() {
+        if (image != null && image.getContentUrl() != null) {
+            return image.getContentUrl(); // Eller det felt i ImageDTO der indeholder URL'en
+        }
+        return null;
+    }
+
+    // Hjælpemetode til at trække årstallet ud som int
+    public int getYear() {
+        String yearStr = getDateCreated();
+        if (!"Unknown Year".equals(yearStr)) {
+            try {
+                return Integer.parseInt(yearStr);
+            } catch (NumberFormatException e) {
+                return 0;
+            }
+        }
+        return 0;
+    }
 }
