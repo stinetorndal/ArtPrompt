@@ -10,7 +10,8 @@
         public ApiException(int code, String msg){
             super(msg);
             this.code = code;
-            logger.error("ApiException (code={}): {}", code, msg);
+            //Nedenstående kan ændres til logger.error, hvis man vil have alt med
+            logger.debug("ApiException (code={}): {}", code, msg);
         }
         public int getCode(){
             return code;

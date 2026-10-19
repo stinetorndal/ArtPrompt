@@ -23,10 +23,9 @@ public class AppRunner {
     PromptWordSeeder seeder = new PromptWordSeeder(emf);
 
 
-   // public void run() {
+   public void run() {
      //   System.out.println("Seeder databasen med initial data...");
        // seeder.seed();
-
 
        /* System.out.println("=== TEST 1: Henter ID'er for Rembrandt ===");
         ArtistCategory testArtist = ArtistCategory.REMBRANDT;
@@ -44,10 +43,8 @@ public class AppRunner {
                 System.out.println("External ID: " + details.getId());
                 System.out.println("Titel: " + details.getTitle());
                 System.out.println("Dato: " + details.getDateCreated());
-
             }
         }
-
         */
     }
 }

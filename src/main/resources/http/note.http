@@ -17,9 +17,10 @@ Content-Type: application/json
 Authorization: Bearer {{auth_token}}
 
 {
-  "text": "Skrøbelig kvindeform, stærke/kraftige blomster",
-  "userId": 6
+  "text": "Seal - sæl eller segl?",
+  "userId": 1
 }
+
 
 ### Hent alle gemte noter fra bruger
 GET http://localhost:7070/api/v1/notes/user/6

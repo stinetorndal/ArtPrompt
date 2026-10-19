@@ -35,6 +35,8 @@ public class RijksmuseumService {
             }
             logger.info("Hentede {} maleri-IDér for kunstneren {}", ids.size(), artist.name());
             return ids;
+        } catch (ApiException e) { //Tikføjet for at kunne kaste fejl via RetryableException
+            throw e;
         } catch (Exception e) {
             logger.error("Fejl ved hentning af maleri-IDér for {}:{}", artist.name(), e.getMessage());
             throw new ApiException(500, "Fejl ved hentning af maleri-ID'er fra Rijksmuseum");

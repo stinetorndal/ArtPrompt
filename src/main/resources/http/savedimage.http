@@ -12,6 +12,7 @@ Content-Type: application/json
 
 ### Hent alle gemte billeder fra bruger
 GET http://localhost:7070/api/v1/images/user/1
+Authorization: Bearer {{auth_token}}
 Content-Type: application/json
 
 ### 3. Fejltest: Prøv at gemme et billede for en bruger der IKKE findes

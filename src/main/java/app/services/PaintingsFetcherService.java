@@ -13,6 +13,7 @@ import java.util.concurrent.*;
 
 public class PaintingsFetcherService {
 
+    private static final int MAX_THREADS = 4; //fx 20 giver risiko for blokering
     private final RijksmuseumService rijksmuseumService;
     private static final Logger logger = LoggerFactory.getLogger(PaintingsFetcherService.class);
 
@@ -41,20 +42,29 @@ public class PaintingsFetcherService {
     }
 
     // 3. ENKELT trådopgave: Måler tid for EN specifik kunstner
+    //Try catch indsat fordi hele fetching fejler, hvis en kunstner fejler
     private ArtistFetchResult fetchOneArtist(ArtistCategory category) {
         long start = System.currentTimeMillis();
-        List<SavedPaintingDTO> paintings =  rijksmuseumService.fetchPaintingsByCategory(category);
-        long duration  = System.currentTimeMillis() - start;
-        logger.info("Hentede {} malerier for {} på {} ms", paintings.size(), category.name(), duration);
+        try {
+            List<SavedPaintingDTO> paintings = rijksmuseumService.fetchPaintingsByCategory(category);
+            long duration = System.currentTimeMillis() - start;
+            logger.info("Hentede {} malerier for {} på {} ms", paintings.size(), category.name(), duration);
 
-        FetchPaintingsTimeStatsDTO stat = new FetchPaintingsTimeStatsDTO(category.name(), duration, paintings.size());
-        return new ArtistFetchResult(stat, paintings);
+            FetchPaintingsTimeStatsDTO stat = new FetchPaintingsTimeStatsDTO(category.name(), duration, paintings.size());
+            return new ArtistFetchResult(stat, paintings);
+        } catch (Exception e) {
+            long duration = System.currentTimeMillis() - start;
+            logger.error("Kunne ikke hente malerier for {}: {}", category.name(), e.getMessage());
+            FetchPaintingsTimeStatsDTO stat = new FetchPaintingsTimeStatsDTO(category.name(), duration, 0);
+            return new ArtistFetchResult(stat, List.of());
+        }
     }
 
 
     // 4. PARALLEL KØRSEL: Tildeler opgaver til trådpuljen (ExecutorService)
     private List<ArtistFetchResult> runInParallel(List<Callable<ArtistFetchResult>> tasks) {
-        ExecutorService executor = Executors.newFixedThreadPool(tasks.size());
+        int threadCount = Math.min(MAX_THREADS, tasks.size()); //Her hentes de fire tråde
+        ExecutorService executor = Executors.newFixedThreadPool(threadCount);
         try {
             List<ArtistFetchResult> results = new ArrayList<>();
             for (Future<ArtistFetchResult> future : executor.invokeAll(tasks)) {

@@ -36,6 +36,8 @@
 
     <!-- Egen 'app' pakke logger på INFO -->
     <logger name="app" level="INFO"/>
+    <!-- Tænd for fejlsøgning af ApiException, hvis der skal logges mere -->
+    <!--  <logger name="app.exceptions.ApiException" level="DEBUG"/>    -->
 
     <root level="INFO">
         <appender-ref ref="STDOUT"/>

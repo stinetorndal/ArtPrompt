@@ -12,7 +12,7 @@ import java.time.Duration;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-//Denne klasse har til formål at begrænse antallet af requests per minut
+//Denne klasse har til formål at begrænse antallet af requests per minut, skal undgå DoS/DDoS
 public class RateLimitController {
 
     Logger logger = LoggerFactory.getLogger(RateLimitController.class);
@@ -21,7 +21,7 @@ public class RateLimitController {
 
     //Hjælpemetode: Her oprettes en ny Bucket for en klient
     private Bucket createNewBucket () {
-        //Genopfyld 20 tokens hvert minue
+        //Genopfyld 20 tokens hvert minut
         Refill refill =Refill.intervally(20, Duration.ofMinutes(1));
         //Sæt max kapacitet til 20 tokens
         Bandwidth limit = Bandwidth.classic(20, refill);
