@@ -3,8 +3,8 @@ POST http://localhost:7070/api/v1/auth/register
 Content-Type: application/json
 
 {
-  "email": "nytestbruger@test.dk",
-  "password": "Qwerty2026!"
+  "email": "SKRIV EN GYLDIG EMAIL HER",
+  "password": "SKRIV ET PASSWORD HER"
 }
 
 ### Login med ny bruger (Happy Path)
@@ -12,8 +12,8 @@ POST http://localhost:7070/api/v1/auth/login
 Content-Type: application/json
 
 {
-  "email": "nytestbruger@test.dk",
-  "password": "Qwerty2026!"
+  "email": "SKRIV DEN NYE EMAILADRESSE HER",
+  "password": "SKRIV EN KODE HER"
 }
 
 
@@ -22,6 +22,6 @@ POST http://localhost:7070/api/v1/auth/register
 Content-Type: application/json
 
 {
-  "email": "nytestbruger.dk",
-  "password": "qwerty26!"
+  "email": "EMAILADRESSE MEN FORKERT TIL TEST",
+  "password": "DET NYE PASSWORD"
 }

@@ -67,8 +67,8 @@ public class Route {
 
             // Rijksmuseum endpoints
             path("/rijksmuseum", () -> {
-                get("/artist", rijksmuseumController::getPaintingsByArtist, Role.ANYONE);
-                get("/fetch-all", rijksmuseumController::fetchAllConcurrently, Role.ANYONE);
+                get("/artist", rijksmuseumController::getPaintingsByArtist, Role.ADMIN);
+                get("/fetch-all", rijksmuseumController::fetchAllConcurrently, Role.ADMIN);
             });
 
             // paintings endpoint - offentligt endpoint, henter malerier fra DB
