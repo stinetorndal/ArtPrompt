@@ -20,6 +20,14 @@ jobs:
           distribution: 'temurin'
 
       - name: Build with Maven
+        env:
+          CONNECTION_STR: ${{ secrets.CONNECTION_STR }}
+          DB_NAME: ${{ secrets.DB_NAME }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          DB_USERNAME: ${{ secrets.DB_USERNAME }}
+          DEPLOYED: ${{ secrets.DEPLOYED }}
+          JWT_EXPIRE_HOURS: ${{ secrets.JWT_EXPIRE_HOURS }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
         run: mvn --batch-mode --update-snapshots package
 
       - name: Login to Docker Hub
