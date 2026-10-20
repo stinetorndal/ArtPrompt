@@ -38,6 +38,7 @@ class SavedPaintingServiceTest {
         // Ryd tabeller i korrekt rækkefølge (SavedPainting før User pga. FK)
         try (EntityManager em = emf.createEntityManager()) {
             em.getTransaction().begin();
+            em.createQuery("DELETE FROM SavedImage").executeUpdate();
             em.createQuery("DELETE FROM SavedPainting").executeUpdate();
             em.createQuery("DELETE FROM User").executeUpdate();
             em.getTransaction().commit();
