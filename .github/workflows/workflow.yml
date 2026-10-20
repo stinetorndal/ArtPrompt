@@ -9,6 +9,22 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: ${{ secrets.DB_USERNAME }}
+          POSTGRES_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          POSTGRES_DB: ${{ secrets.DB_NAME }}_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -21,13 +37,12 @@ jobs:
 
       - name: Build with Maven
         env:
-          CONNECTION_STR: ${{ secrets.CONNECTION_STR }}
-          DB_CONNECTION_STRING: ${{ secrets.CONNECTION_STR }}
+          # Peger på test-containeren ovenfor, ikke på den rigtige database.
+          # Indeholder ingen hemmeligheder, så den må gerne stå i klartekst.
+          CONNECTION_STR: jdbc:postgresql://localhost:5432/
           DB_NAME: ${{ secrets.DB_NAME }}
-          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
           DB_USERNAME: ${{ secrets.DB_USERNAME }}
-          DB_USER: ${{ secrets.DB_USERNAME }}
-          DEPLOYED: ${{ secrets.DEPLOYED }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
           JWT_EXPIRE_HOURS: ${{ secrets.JWT_EXPIRE_HOURS }}
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
         run: mvn --batch-mode --update-snapshots package
