@@ -22,9 +22,11 @@ jobs:
       - name: Build with Maven
         env:
           CONNECTION_STR: ${{ secrets.CONNECTION_STR }}
+          DB_CONNECTION_STRING: ${{ secrets.CONNECTION_STR }}
           DB_NAME: ${{ secrets.DB_NAME }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
           DB_USERNAME: ${{ secrets.DB_USERNAME }}
+          DB_USER: ${{ secrets.DB_USERNAME }}
           DEPLOYED: ${{ secrets.DEPLOYED }}
           JWT_EXPIRE_HOURS: ${{ secrets.JWT_EXPIRE_HOURS }}
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
