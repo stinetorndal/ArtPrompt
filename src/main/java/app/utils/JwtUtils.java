@@ -13,7 +13,7 @@
         //Næste to oprettes EN gang ved hvert kald. Static final = Oprettes EN gang, når klasse oprettes
         private static final Algorithm ALGORITHM = Algorithm.HMAC256(System.getenv("JWT_SECRET")); //Signerer med HMA+env = lås
         private static final JWTVerifier VERIFIER = JWT.require(ALGORITHM).build(); //Færdigbygget verify-objekt. Checker signatur og udløbstid
-        private static final long EXPIRATION_HOURS = 3; //Udløbstid i timer
+        private static final long EXPIRATION_HOURS = Long.parseLong(System.getenv().getOrDefault("JWT_EXPIRE_HOURS", "6")); //Udløbstid i timer
 
         private JwtUtils (){} //privat konstruktør så ingen kan skrive  new JwtUtils
 
