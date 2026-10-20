@@ -14,9 +14,18 @@ import java.util.Random;
 public class UnsplashService {
 
     private static final Logger logger = LoggerFactory.getLogger(UnsplashService.class);
-    private APIService apiService = new APIService();
+    private final APIService apiService;
     private Random random = new Random();
 
+    // Bruges i den rigtige app
+    public UnsplashService() {
+        this(new APIService());
+    }
+
+    // Konstruktør til unit-testing (dependency injection)
+    public UnsplashService(APIService apiService) {
+        this.apiService = apiService;
+    }
 
     public List<PhotoDTO> getPicturesWithPickedColor(Color color) {
 

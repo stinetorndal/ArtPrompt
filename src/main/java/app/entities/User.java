@@ -36,4 +36,10 @@ public class User {
         this.password = password;
         // role bliver automatisk USER via standardværdien ovenfor
     }
+    //Til brug i test
+    public User(String email, String password, Role role) {
+        this.email = email;
+        this.password = password;
+        this.role = role;
+    }
 }

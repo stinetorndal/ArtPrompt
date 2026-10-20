@@ -30,7 +30,7 @@ class SaveFetchedPaintingsServiceTest {
     @BeforeEach
     void setUp() {
         paintingDAO = new PaintingDAO(emf);
-        saveService = new SaveFetchedPaintingsService(paintingDAO);
+        saveService = new SaveFetchedPaintingsService(emf);
 
         RijksmuseumService rijksmuseumService = new RijksmuseumService();
         fetcherService = new PaintingsFetcherService(rijksmuseumService);

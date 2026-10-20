@@ -28,10 +28,8 @@ class SavedImageServiceTest {
 
     @AfterAll
     static void tearDownAll() {
-        if (emf != null) {
-            emf.close();
-        }
-    }
+        // undlader emf.close(), så EntityManagerFactory ikke lukkes for efterfølgende tests
+           }
 
     @BeforeEach
     void setUp() {

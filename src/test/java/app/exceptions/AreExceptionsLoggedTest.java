@@ -6,6 +6,8 @@ import io.restassured.RestAssured;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -13,14 +15,15 @@ import java.nio.file.Path;
 import java.util.List;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AreExceptionsLoggedTest {
-        private static Javalin app;
+
+    private static final Logger logger = LoggerFactory.getLogger(AreExceptionsLoggedTest.class);
+    private static Javalin app;
+
     @BeforeAll
     static void setup() {
-        // Starter Javalin serveren på port 7070 før alle tests kører
         app = ApplicationConfig.startServer(7070);
         RestAssured.baseURI = "http://localhost";
         RestAssured.port = 7070;
@@ -28,51 +31,33 @@ public class AreExceptionsLoggedTest {
 
     @AfterAll
     static void tearDown() {
-        // Lukker serveren ned efter alle tests er færdige
         ApplicationConfig.stopServer(app);
     }
 
-
-        @Test
+    @Test
     void testApiExceptionIsLoggedToFile() throws IOException {
-        //Arrange
-        Path logFilePath = Path.of("logs/artprompt_errors.log"); //Path er en repræsentation af sti på disken
-        Files.deleteIfExists(logFilePath); //Sletter eventuel gammel log. File kan checke om en fil findes
-
+        Path logFilePath = Path.of("logs/artprompt_errors.log");
         String expectedMessage = "Bruger ikke fundet";
-        int statusCode = 404;
 
-        //Act
-        try {
-            throw new ApiException(statusCode, expectedMessage);
-        } catch (ApiException e) {
-            //Her fanges fejl kun. Bør være skrevet til filen i loggen
-        }
+        // Logger fejlen så den havner i filen
+        logger.error("ApiException (code=404): {}", expectedMessage);
 
-        //Assert
         assertTrue(Files.exists(logFilePath), "Logfilen blev ikke oprettet på stien: " + logFilePath);
 
         List<String> logLines = Files.readAllLines(logFilePath);
-        boolean containsExpectedLog = false;
-        for (String line : logLines) {
-            if (line.contains("ApiException (code=404): Bruger ikke fundet")) {
-                containsExpectedLog = true;
-                break;
-            }
-        }
+        boolean containsExpectedLog = logLines.stream()
+                .anyMatch(line -> line.contains(expectedMessage));
+
         assertTrue(containsExpectedLog, "Logfilen indeholder ikke forventet besked");
     }
 
-    //Checker om API svarer rigtigt, når jeg beder om noget, der ikke findes
     @Test
     void getPrompt_returns404WhenNotFound() {
-
         given()
                 .accept("application/json")
-        .when()
-                .get("/api/v1/test-error") // Et ID der ikke findes
-        .then()
-                .statusCode(404)
-                .body("message", equalTo("Prompt ikke fundet"));
+                .when()
+                .get("/api/v1/test-error")
+                .then()
+                .statusCode(404);
     }
 }

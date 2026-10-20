@@ -23,6 +23,14 @@ class UserServiceTest {
 
     @BeforeEach
     void setUp() {
+        // Tømmer databasen før hver test for at undgå 'UserAlreadyExistsException'
+        try (var em = emf.createEntityManager()) {
+            em.getTransaction().begin();
+            em.createQuery("DELETE FROM SavedImage").executeUpdate();
+            em.createQuery("DELETE FROM User").executeUpdate();
+            em.getTransaction().commit();
+        }
+
         UserDAO userDAO = new UserDAO(emf);
         userService = new UserService(userDAO);
     }
@@ -31,27 +39,20 @@ class UserServiceTest {
     @Test
     void testCreateUserSuccess() {
         System.out.println("------ Bruger oprettes ------");
-        // Arrange
         UserDTO inputDTO = new UserDTO("testbruger@test.dk", "Password1!");
 
-        // Act
         UserDTO createdUser = userService.createUser(inputDTO);
 
-        // Assert
         assertNotNull(createdUser);
         assertEquals("testbruger@test.dk", createdUser.getEmail());
-
-        // Password skal være null i DTO retur af sikkerhedshensyn
         assertNull(createdUser.getPassword());
     }
 
     // NEGATIV TEST: Ugyldig e-mail kaster ApiException
     @Test
     void testCreateUserInvalidEmailThrowsException() {
-        // Arrange
         UserDTO inputDTO = new UserDTO("hej.dk", "Password1!");
 
-        // Act & Assert
         ApiException exception = assertThrows(
                 ApiException.class,
                 () -> userService.createUser(inputDTO)
@@ -64,10 +65,8 @@ class UserServiceTest {
     // NEGATIV TEST: For svagt password kaster ApiException
     @Test
     void testCreateUserWeakPasswordThrowsException() {
-        // Arrange
         UserDTO inputDTO = new UserDTO("testbruger@test.dk", "hej");
 
-        // Act & Assert
         ApiException exception = assertThrows(
                 ApiException.class,
                 () -> userService.createUser(inputDTO)
@@ -82,17 +81,14 @@ class UserServiceTest {
     void testLoginSuccess() {
         System.out.println("------ POSITIV TEST: LOGIN ------");
 
-        // Arrange: Opretter først bruger i DB
         UserDTO inputDTO = new UserDTO("testbruger@test.dk", "Password1!");
         userService.createUser(inputDTO);
 
-        // Act: Login med samme DTO
         UserDTO loggedInUser = userService.login(inputDTO);
 
-        // Assert
         assertNotNull(loggedInUser);
         assertEquals("testbruger@test.dk", loggedInUser.getEmail());
-        assertNull(loggedInUser.getPassword()); // Sikrer at password ikke sendes med ud
+        assertNull(loggedInUser.getPassword());
     }
 
     // NEGATIV TEST: Forkert password ved login kaster ApiException
@@ -100,13 +96,11 @@ class UserServiceTest {
     void testLoginWrongPasswordThrowsException() {
         System.out.println("------ NEGATIV TEST: FORKERT PW ------");
 
-        // Arrange
         UserDTO originalUser = new UserDTO("testbruger2@test.dk", "Password1!");
         userService.createUser(originalUser);
 
         UserDTO wrongPasswordInput = new UserDTO("testbruger2@test.dk", "SkrevForkertPassword1!");
 
-        // Act & Assert
         ApiException exception = assertThrows(
                 ApiException.class,
                 () -> userService.login(wrongPasswordInput)
