@@ -5,10 +5,14 @@ import jakarta.persistence.EntityManagerFactory;
 
 import java.util.Properties;
 
+
 public final class HibernateConfig {
 
+    private static final String CONFIG_FILE = "config.properties";
+    private static final String LOCAL_URL = "jdbc:postgresql://localhost:5432/";
+
     private static volatile EntityManagerFactory emf;
-    private static volatile EntityManagerFactory emfTest; // Hukommelse til test-EMF
+    private static volatile EntityManagerFactory emfTest;
 
     private HibernateConfig() {}
 
@@ -23,7 +27,7 @@ public final class HibernateConfig {
         return emf;
     }
 
-    //  Bruges kun til JUnit integrationstests
+    // Bruges kun til JUnit integrationstests
     public static EntityManagerFactory getEntityManagerFactoryForTest() {
         if (emfTest == null) {
             synchronized (HibernateConfig.class) {
@@ -37,51 +41,49 @@ public final class HibernateConfig {
 
     private static Properties buildProps() {
         Properties props = HibernateBaseProperties.createBase();
-
         // Teaching-friendly default - change to update in production
         props.put("hibernate.hbm2ddl.auto", "update");
 
         if (System.getenv("DEPLOYED") != null) {
-            setDeployedProperties(props);
+            applyDeployedConnection(props);
         } else {
-            setDevProperties(props);
+            applyConfigFileConnection(props, "");
         }
         return props;
     }
 
-    // Opbygger konfiguration specifikt til test-databasen
+    // Test-databasen er den almindelige database med "_test" som suffix
     private static Properties buildTestProps() {
         Properties props = HibernateBaseProperties.createBase();
-
-        // Generér friske tabeller fra bunden hver gang tests køres
+        // Friske tabeller fra bunden hver gang tests køres
         props.put("hibernate.hbm2ddl.auto", "create");
 
-        // _test bliver lagt efter min database:
-        String dbName = Utils.getPropertyValue("DB_NAME", "config.properties") + "_test";
-        String username = Utils.getPropertyValue("DB_USERNAME", "config.properties");
-        String password = Utils.getPropertyValue("DB_PASSWORD", "config.properties");
-
-        props.put("hibernate.connection.url", "jdbc:postgresql://localhost:5432/" + dbName);
-        props.put("hibernate.connection.username", username);
-        props.put("hibernate.connection.password", password);
-
+        applyConfigFileConnection(props, "_test");
         return props;
     }
 
-    private static void setDeployedProperties(Properties props) {
-        String dbName = System.getenv("DB_NAME");
-        props.setProperty("hibernate.connection.url", System.getenv("CONNECTION_STR") + dbName);
+    private static void applyDeployedConnection(Properties props) {
+        props.setProperty("hibernate.connection.url",
+                System.getenv("CONNECTION_STR") + System.getenv("DB_NAME"));
         props.setProperty("hibernate.connection.username", System.getenv("DB_USERNAME"));
         props.setProperty("hibernate.connection.password", System.getenv("DB_PASSWORD"));
     }
 
-    private static void setDevProperties(Properties props) {
-        String dbName = Utils.getPropertyValue("DB_NAME", "config.properties");
-        String username = Utils.getPropertyValue("DB_USERNAME", "config.properties");
-        String password = Utils.getPropertyValue("DB_PASSWORD", "config.properties");
+    private static void applyConfigFileConnection(Properties props, String dbNameSuffix) {
+        String dbName = config("DB_NAME") + dbNameSuffix;
+        String connectionStr = config("CONNECTION_STR");
 
-        props.put("hibernate.connection.url", "jdbc:postgresql://localhost:5432/" + dbName);
-        props.put("hibernate.connection.username", username);
-        props.put("hibernate.connection.password", password);
+        // Hvis CONNECTION_STR findes (fx via GitHub Secrets), bruges den. Ellers fallback til localhost.
+        String baseUrl = (connectionStr != null && !connectionStr.isBlank())
+                ? connectionStr
+                : LOCAL_URL;
+
+        props.put("hibernate.connection.url", baseUrl + dbName);
+        props.put("hibernate.connection.username", config("DB_USERNAME"));
+        props.put("hibernate.connection.password", config("DB_PASSWORD"));
+    }
+
+    private static String config(String key) {
+        return Utils.getPropertyValue(key, CONFIG_FILE);
     }
 }
