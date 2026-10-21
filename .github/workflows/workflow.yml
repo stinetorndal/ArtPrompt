@@ -16,7 +16,7 @@ jobs:
         env:
           POSTGRES_USER: ${{ secrets.DB_USERNAME }}
           POSTGRES_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          POSTGRES_DB: ${{ secrets.DB_NAME }}_test
+          POSTGRES_DB: ${{ secrets.DB_NAME }}
         ports:
           - 5432:5432
         options: >-
@@ -35,6 +35,13 @@ jobs:
           java-version: '25'
           distribution: 'temurin'
 
+      - name: Create test database
+        env:
+          PGPASSWORD: ${{ secrets.DB_PASSWORD }}
+          DB_NAME: ${{ secrets.DB_NAME }}
+          DB_USERNAME: ${{ secrets.DB_USERNAME }}
+        run: psql -h localhost -U "$DB_USERNAME" -d "$DB_NAME" -c "CREATE DATABASE \"${DB_NAME}_test\";"
+
       - name: Build with Maven
         env:
           # Peger på test-containeren ovenfor, ikke på den rigtige database.
@@ -48,15 +55,18 @@ jobs:
         run: mvn --batch-mode --update-snapshots package
 
       - name: Login to Docker Hub
+        if: github.event_name == 'push'
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Set up Docker Buildx
+        if: github.event_name == 'push'
         uses: docker/setup-buildx-action@v2
 
       - name: Build and push
+        if: github.event_name == 'push'
         uses: docker/build-push-action@v4
         with:
           context: .
