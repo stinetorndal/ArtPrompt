@@ -29,61 +29,63 @@ public class Route {
         this.promptWordController = promptWordController;
         this.unsplashController = unsplashController;
         this.savedImageController = savedImageController;
-        this.noteController= noteController;
+        this.noteController = noteController;
         this.rijksmuseumController = rijksmuseumController;
         this.savedPaintingController = savedPaintingController;
-         }
-    public EndpointGroup getRoutes () {
-        return () -> path("/api/v1", () -> {  // fortæller det er api
+    }
 
+    public EndpointGroup getRoutes() {
+        return () -> {
             //Welcome
-            get("/",  ctx -> ctx.result("Welcome to ArtPrompt API"), Role.ANYONE);
+            get("/", ctx -> ctx.result("Welcome to ArtPrompt API"), Role.ANYONE);
 
-            //auth-endpoints = email+login
-            path("/auth", () -> { //standard for Authentication = email + pw. Javalin sætter flg sammen:
-                post("/register", userController::register, Role.ANYONE);
-                post("/login", userController::login, Role.ANYONE);
-            });
+            path("/api/v1", () -> {
 
-            // Prompt endpoints
-            path("/prompts", () -> {
-                get("/categories", promptWordController::getCategories, Role.ANYONE);
-                get("/random", promptWordController::getRandomPrompt, Role.ANYONE);
-            });
+                //auth-endpoints = email+login
+                path("/auth", () -> { //standard for Authentication = email + pw. Javalin sætter flg sammen:
+                    post("/register", userController::register, Role.ANYONE);
+                    post("/login", userController::login, Role.ANYONE);
+                });
 
-            // Unsplash endpoints
-            path("/unsplash", () -> {
-                get("/color", unsplashController::getPicturesByColor, Role.ANYONE);
-            });
+                // Prompt endpoints
+                path("/prompts", () -> {
+                    get("/categories", promptWordController::getCategories, Role.ANYONE);
+                    get("/random", promptWordController::getRandomPrompt, Role.ANYONE);
+                });
 
-            //SavedImage endpoints
-            path("/images", () -> {
-                post("/save", savedImageController::saveImage,Role.USER, Role.ADMIN);
-                get("/user/{userId}", savedImageController::getSavedImagesByUser, Role.USER, Role.ADMIN);
-            });
+                // Unsplash endpoints
+                path("/unsplash", () -> {
+                    get("/color", unsplashController::getPicturesByColor, Role.ANYONE);
+                });
 
-            //Note endpoints
-            path("/notes", () -> {
-                post("/save", noteController::saveNote,Role.USER, Role.ADMIN);
-                get("/user/{userId}", noteController::getSavedNotesByUser, Role.USER, Role.ADMIN);
-            });
+                //SavedImage endpoints
+                path("/images", () -> {
+                    post("/save", savedImageController::saveImage, Role.USER, Role.ADMIN);
+                    get("/user/{userId}", savedImageController::getSavedImagesByUser, Role.USER, Role.ADMIN);
+                });
 
-            // Rijksmuseum endpoints
-            path("/rijksmuseum", () -> {
-                get("/artist", rijksmuseumController::getPaintingsByArtist, Role.ADMIN);
-                get("/fetch-all", rijksmuseumController::fetchAllConcurrently, Role.ADMIN);
-            });
+                //Note endpoints
+                path("/notes", () -> {
+                    post("/save", noteController::saveNote, Role.USER, Role.ADMIN);
+                    get("/user/{userId}", noteController::getSavedNotesByUser, Role.USER, Role.ADMIN);
+                });
 
-            // paintings endpoint - offentligt endpoint, henter malerier fra DB
-            path("/paintings", () -> {
-                get("/random", savedPaintingController::getRandomPaintings, Role.ANYONE);
+                // Rijksmuseum endpoints
+                path("/rijksmuseum", () -> {
+                    get("/artist", rijksmuseumController::getPaintingsByArtist, Role.ADMIN);
+                    get("/fetch-all", rijksmuseumController::fetchAllConcurrently, Role.ADMIN);
+                });
+
+                // paintings endpoint - offentligt endpoint, henter malerier fra DB
+                path("/paintings", () -> {
+                    get("/random", savedPaintingController::getRandomPaintings, Role.ANYONE);
+                });
+                //SavedPainting endpoints
+                path("/paintings", () -> {
+                    post("/save", savedPaintingController::savePainting, Role.USER, Role.ADMIN);
+                    get("/user/{userId}", savedPaintingController::getSavedPaintingsByUser, Role.USER, Role.ADMIN);
+                });
             });
-            //SavedPainting endpoints
-            path("/paintings", () -> {
-                post("/save", savedPaintingController::savePainting,Role.USER, Role.ADMIN);
-                get("/user/{userId}", savedPaintingController::getSavedPaintingsByUser, Role.USER, Role.ADMIN);
-                 });
-        });
+        };
     }
-    }
-
+}

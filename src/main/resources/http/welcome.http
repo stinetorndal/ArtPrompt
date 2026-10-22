@@ -1,0 +1,5 @@
+### 1. Test det nuværende welcome-endpoint (inde i /api/v1)
+GET https://torndalchristensen.dk/api/v1/
+
+### 2. Test selve forsiden (giver 404 lige nu)
+GET https://torndalchristensen.dk/
