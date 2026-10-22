@@ -16,8 +16,8 @@ POST http://localhost:7070/api/v1/auth/login
 Content-Type: application/json
 
 {
-  "email": "testbruger@test.dk",
-  "password": "26_IamdeadINside"
+  "email": "admin@test.dk",
+  "password": "PASSWORD FRA NOTER"
 }
 > {%
     // Gemmer token fra svaret i en variabel til næste anmodning

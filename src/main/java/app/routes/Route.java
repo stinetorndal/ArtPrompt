@@ -36,6 +36,9 @@ public class Route {
     public EndpointGroup getRoutes () {
         return () -> path("/api/v1", () -> {  // fortæller det er api
 
+            //Welcome
+            get("/",  ctx -> ctx.result("Welcome to ArtPrompt API"), Role.ANYONE);
+
             //auth-endpoints = email+login
             path("/auth", () -> { //standard for Authentication = email + pw. Javalin sætter flg sammen:
                 post("/register", userController::register, Role.ANYONE);

@@ -37,7 +37,6 @@ public class PromptWordSeeder {
     }
 
 
-
         // Hvvad hvis jeg tilføjer ET ord
         //Læser csv-filen og bygger objekter
         private List<PromptWord> parseCsv() {
