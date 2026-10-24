@@ -41,15 +41,21 @@ public class PaintingDTO {
         return "Unknown Title";
     }
 
-    // Hjælpemetode til at trække årstallet ud
-    public String getDateCreated() {
-        if (producedBy != null && producedBy.getTimespan() != null && producedBy.getTimespan().getBeginOfTheBegin() != null) {
-            String dateString = producedBy.getTimespan().getBeginOfTheBegin(); //henter fulde datostreng fra API
-            if (dateString.length() >= 4) { //hiver første 4 ud, som er årstallet
-                return dateString.substring(0, 4);
-            }
+    // Hjælpemetode til finde den første dato, hvis der er tilknyttet flere til maleri. Null forhindrer crash
+    private String getFirstBeginDate(){
+        if (producedBy == null || producedBy.getTimespan() == null || producedBy.getTimespan().isEmpty()){
+            return null;
         }
-        return "Unknown Year";
+        return producedBy.getTimespan().get(0).getBeginOfTheBegin();
+    }
+
+    //Finder førte fire karakterer = årstal fra timespans første datasæt
+    public String getDateCreated() {
+        String dateString = getFirstBeginDate();
+        if (dateString== null && dateString.length() >=4){
+            return dateString.substring(0,4);
+            }
+                return "Unknown Year";
     }
 
     // Hjælpemetode til at hente billedets URL
