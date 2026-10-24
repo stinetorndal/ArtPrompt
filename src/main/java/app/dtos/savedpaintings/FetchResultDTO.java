@@ -10,6 +10,7 @@ import java.util.List;
 //Hører til Threads
 public class FetchResultDTO {
     private long totalDurationMs;
+    private int threadsUsed;
     private int totalPaintings;
     private List<FetchPaintingsTimeStatsDTO> stats;
     private List<SavedPaintingDTO> paintings;

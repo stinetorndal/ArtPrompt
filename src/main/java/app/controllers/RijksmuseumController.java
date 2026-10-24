@@ -59,24 +59,46 @@ public class RijksmuseumController {
         ctx.status(200).json(resultList);
     }
 
-    // GET /api/v1/rijksmuseum/fetch-all
+    // GET /api/v1/rijksmuseum/fetch-all?threads=6
+    //Order: enabled? -> valid thread count? -> take the lock -> fetch -> release the lock
     //Der kører kun et kald af gangen tl Rijksmuseum. Endnu et kald giver HTTP 409.
     public void fetchAllConcurrently(Context ctx) {
         ensureFetchIsEnabled();
+        int threadCount = readThreadCount(ctx);
         claimFetchSlot();
         try {
-            runFetchAndSave(ctx);
+            runFetchAndSave(ctx, threadCount);
         } finally {
             fetchRunning.set(false);
             //frigør selv om fetch fejler så kald kan køre igen. SKAL ligge i finally ellers kan man ikke fetche igen
         }
     }
+    //læser threads fra url. Hvis dt mangler, returnerer den DEFAULT = 4
+    private int readThreadCount(Context ctx) {
+        String raw = ctx.queryParam("threads");
+        if (raw == null || raw.isBlank()) {
+            return PaintingsFetcherService.DEFAULT_THREADS;
+        }
+        int threadCount = parseThreadCount(raw.trim());
+        if(threadCount < 1 || threadCount > PaintingsFetcherService.MAX_THREADS){
+            throw new ApiException(400, "threads must be between 1 and " + PaintingsFetcherService.MAX_THREADS);
+        }
+        return threadCount;
+    }
+    //Laver tekst til tal, parser fx abc til fejl 400
+    private int parseThreadCount(String raw) {
+        try {
+            return Integer.parseInt(raw);
+        } catch (NumberFormatException e) {
+            throw new ApiException(400, "Threads must be a whole number, for example 2 or 4");
+        }
+    }
 
     //Virker fetching
-    private void runFetchAndSave(Context ctx) {
-        FetchResultDTO result = paintingsFetcherService.fetchAllPaintingsConcurrently();
+    private void runFetchAndSave(Context ctx, int threadCount) {
+        FetchResultDTO result = paintingsFetcherService.fetchAllPaintingsConcurrently(threadCount);
         int savedCount = saveFetchedPaintingsService.saveAllNewPaintings(result.getPaintings());
-        logger.info("Gemte {} malerier i databasen", savedCount);
+        logger.info("Gemte {} malerier i kataloget under fecthAllConcurrently", savedCount);
         ctx.status(200).json(result);
     }
 
