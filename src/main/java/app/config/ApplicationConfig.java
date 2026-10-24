@@ -69,6 +69,7 @@ public class ApplicationConfig {
         // 2. Opret Javalin
         Javalin app = Javalin.create(config -> {
             config.router.apiBuilder(route.getRoutes());
+            config.bundledPlugins.enableRouteOverview("/api/v1/routes");
         });
 
         // 3. Global Rate Limiting på alle API'routes
