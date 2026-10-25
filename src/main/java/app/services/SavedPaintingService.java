@@ -7,6 +7,8 @@ import app.entities.SavedPainting;
 import app.entities.User;
 import app.exceptions.ApiException;
 import app.mappers.SavedPaintingMapper;
+import app.dao.PaintingDAO;
+import app.entities.Painting;
 import jakarta.persistence.EntityManagerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,11 +23,13 @@ public class SavedPaintingService {
     private final SavedPaintingDAO savedPaintingDAO;
     private final UserDAO userDAO;
     private final SavedPaintingMapper savedPaintingMapper;
+    private final PaintingDAO paintingDAO;
 
     public SavedPaintingService(EntityManagerFactory emf) {
         this.savedPaintingDAO = new SavedPaintingDAO(emf);
         this.userDAO = new UserDAO(emf);
         this.savedPaintingMapper = new SavedPaintingMapper();
+        this.paintingDAO = new PaintingDAO(emf);
     }
 
     //slår bruger op via dto, opretter entitet, gemmer i DAO, returnerer savedPaintingDTO
@@ -68,14 +72,14 @@ public class SavedPaintingService {
 
     // Henter et tilfældigt udvalg af gemte malerier fra databasen
     public List<SavedPaintingDTO> getRandomPaintings(int limit) {
-        List<SavedPainting> paintings = new ArrayList<>(savedPaintingDAO.findAll());
+        List<Painting> paintings = new ArrayList<>(paintingDAO.findAll());
         Collections.shuffle(paintings);
 
         List<SavedPaintingDTO> dtos = new ArrayList<>();
         int count = Math.min(limit, paintings.size());
 
         for (int i = 0; i < count; i++) {
-            dtos.add(savedPaintingMapper.toDTO(paintings.get(i)));
+            dtos.add(savedPaintingMapper.fromCatalogPainting(paintings.get(i)));
         }
 
         logger.info("Returnerede {} tilfældige malerier fra databasen", dtos.size());

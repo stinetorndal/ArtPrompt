@@ -5,6 +5,7 @@ import app.dtos.savedpaintings.SavedPaintingDTO;
 import app.entities.ArtistCategory;
 import app.entities.SavedPainting;
 import app.entities.User;
+import app.entities.Painting;
 
 public class SavedPaintingMapper {
 
@@ -49,6 +50,19 @@ public class SavedPaintingMapper {
                 painting.getUrl(),
                 painting.getYear(),
                 userId
+        );
+    }
+    //Konverterer katalogmaleri fra Rijksmuseum  til DTO. Ingen bruger så = null
+    public SavedPaintingDTO fromCatalogPainting(Painting painting) {
+        if (painting == null) return null;
+
+        return new SavedPaintingDTO(
+                painting.getExternalId(),
+                painting.getTitle(),
+                painting.getArtist(),
+                painting.getUrl(),
+                painting.getYear(),
+                null
         );
     }
 
