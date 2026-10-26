@@ -30,8 +30,8 @@ public class UserService {
         }
         //Validér password
         if (!Validator.isPasswordValid(userDTO.getPassword())) {
-            logger.warn("Forsøg på oprettelse med for kort password for email: {}", userDTO.getEmail());
-            throw new ValidationException("Adgangskode skal være på mindst 8 tegn");
+            logger.warn("Forsøg på oprettelse med ugyldigt password for email: {}", userDTO.getEmail());
+            throw new ValidationException("Adgangskode skal være på mindst 8 tegn og indeholde mindst ét stort bogstav, ét tal og ét specialtegn");
         }
         //Er brugernavn allerede i brug i db?
         if (userDAO.doesEmailExist(userDTO.getEmail())) {

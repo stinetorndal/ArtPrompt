@@ -1,4 +1,4 @@
-package ui;
+/* package ui;
 
 import app.dtos.savedimages.SavedImageDTO;
 import app.dtos.user.UserDTO;
@@ -38,3 +38,5 @@ public class SavedImageUIHandler {
         }
     }
 }
+
+ */

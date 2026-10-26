@@ -1,4 +1,4 @@
-package ui;
+/* package ui;
 
 import app.dtos.promptword.PromptWordDTO;
 import app.entities.PromptCategory;
@@ -48,4 +48,6 @@ public class PromptUIHandler {
     }
     }
 
+
+ */
 

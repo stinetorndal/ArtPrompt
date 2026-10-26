@@ -1,4 +1,4 @@
-package ui;
+/* package ui;
 
 import app.dtos.unsplash.PhotoDTO;
 import app.entities.Color;
@@ -71,3 +71,6 @@ public class UnsplashUIHandler {
         return null;
     }
 }
+
+
+ */

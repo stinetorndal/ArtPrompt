@@ -1,4 +1,4 @@
-package ui;
+/* package ui;
 
 import app.dtos.user.UserDTO;
 import app.exceptions.ApiException;
@@ -57,3 +57,5 @@ public class UserUIHandler {
         }
     }
 }
+
+ */
