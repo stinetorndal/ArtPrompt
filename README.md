@@ -407,10 +407,13 @@ As a logged-in user, I want to save images from the color search, so I can see a
   **then** the request is rejected with an error.
 
 **10. Notes**
-As a logged-in user, I want to write notes with my ideas, so I can see an overview of them.
+As a logged-in user, I want to write notes with my ideas, so I can see an overview of them with dates.
 - **Given** a logged-in user and some text,
   **when** I save the note,
-  **then** it is stored with a link to my account.
+  **then** it is stored with a link to my account and an automatic creation date set by the server.
+- **Given** I have saved notes,
+  **when** I request my notes,
+  **then** I get a list where each note includes its text and creation date.
 
 ## Admin
 
