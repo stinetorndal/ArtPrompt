@@ -317,8 +317,6 @@ Error codes for `fetch-all`: `400` invalid `threads`, `401` missing or expired t
 
 # User Stories
 
-# User Stories
-
 The app is built for anonymous use. Accounts are only needed to save paintings, images and notes.
 
 ## Anonymous users
