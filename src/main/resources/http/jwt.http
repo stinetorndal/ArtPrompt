@@ -17,7 +17,7 @@ Content-Type: application/json
 
 {
   "email": "admin@test.dk",
-  "password": "PASSWORD FRA NOTER"
+  "password": "Lille_Sommerfugl19"
 }
 > {%
     // Gemmer token fra svaret i en variabel til næste anmodning

@@ -28,4 +28,10 @@ public class Note {
     //Undgår uendelig løkke i ToString hvis student kalder course og omvendt
     @ToString.Exclude
     private User user;
+
+    //Kører automatisk før en note gemmes, så den datostemples. Hibernate kalder denne før  INSERT
+    @PrePersist
+    private void setCreatedDate(){
+        this.createdAt = LocalDate.now();
     }
+}

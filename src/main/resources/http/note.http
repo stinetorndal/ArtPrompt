@@ -17,7 +17,7 @@ Content-Type: application/json
 Authorization: Bearer {{auth_token}}
 
 {
-  "text": "Seal - sæl eller segl?",
+  "text": "Dark Fantasy aesthetic Lord of the Rings",
   "userId": 1
 }
 

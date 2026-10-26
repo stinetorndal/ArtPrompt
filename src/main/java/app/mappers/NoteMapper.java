@@ -13,7 +13,8 @@ public class NoteMapper {
         return new NoteDTO(
                 note.getId(),
                 note.getText(),
-                user != null ? user.getId() : null
+                user != null ? user.getId() : null,
+                note.getCreatedAt()
         );
     }
     //Opretter nyt Note-objekt, bruger settere til at overføre data til DTO og knytte User-entitet

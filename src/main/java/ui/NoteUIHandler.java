@@ -1,4 +1,4 @@
-package ui;
+/*package ui;
 
 import app.dtos.note.NoteDTO;
 import app.dtos.user.UserDTO;
@@ -58,3 +58,5 @@ public class NoteUIHandler {
     }
 }
 
+
+ */
