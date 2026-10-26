@@ -344,12 +344,15 @@ As an artist, I want to get random paintings, so I can find inspiration in class
 
 **4. Images by color**
 As an artist, I want to get images from a color category, so I can find visual inspiration.
-- **Given** a valid color (e.g. `RED`),
+- **Given** a valid color (e.g. `RED`, case does not matter),
   **when** I request images,
-  **then** I get ten images in that color from Unsplash.
-- **Given** an invalid color,
+  **then** I get up to ten images in that color from Unsplash.
+- **Given** a missing or invalid color,
   **when** I request images,
-  **then** the request is rejected with an error.
+  **then** the request is rejected with a 400 error and the error is logged.
+- **Given** the Unsplash API cannot be reached,
+  **when** I request images,
+  **then** a 500 error is returned.
 
 ## Users
 
