@@ -246,13 +246,20 @@ Note: a browser address bar cannot send this header, so use an HTTP client
 Public endpoints (no login needed) can be opened directly in the browser, for example:
 `https://torndalchristensen.dk/api/v1/paintings/random`
 
-Protected endpoints require the header `Authorization: Bearer <token>`.
-
 
 ### Log in
 
 ```
 POST /auth/login
+```
+
+Request body:
+
+```json
+{ "email": "user@example.com", "password": "secret" }
+```
+
+Response: `200 OK` with a JWT token.
 
 Example with curl:
 
@@ -312,6 +319,7 @@ These require `Authorization: Bearer <token>`, so use an HTTP client such as an 
 Error codes for `fetch-all`: `400` invalid `threads`, `401` missing or expired token, `403` not an admin, `409` a fetch is already running, `503` fetching is switched off.
 
 **Note on access:** The user endpoints and admin endpoints are protected on purpose. The app is meant to be used anonymously, and accounts are only needed to save paintings, images and notes.
+
 ---
 
 # User Stories
@@ -419,11 +427,11 @@ As an admin, I want to fetch paintings from the Rijksmuseum API using several th
 
 # Development Notes
 
-- Setting up CI with a PostgreSQL service container and separate test database
+- Setting up CI with a PostgreSQL service container and a separate test database
 - Handling secrets with environment variables instead of hardcoding
-- Parallel fetching from an external API
-- The number of threads can be set per request with `?threads=` (1 to 8, default 4).
-Measured times for 2, 4, 6 and 8 threads: TODO
+- Parallel fetching from an external API, with a limit of one fetch at a time
+- Moving the database behind a firewall and changing the default password
+- Setting up HTTPS with Caddy and automatic updates with Watchtower
 
 ---
 
