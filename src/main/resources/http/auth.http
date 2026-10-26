@@ -1,5 +1,5 @@
 ### Registrer en ny bruger (Happy Path)
-POST http://localhost:7070/api/v1/auth/register
+POST {{host}}/api/v1/auth/register
 Content-Type: application/json
 
 {
@@ -8,17 +8,17 @@ Content-Type: application/json
 }
 
 ### Login med ny bruger (Happy Path)
-POST http://localhost:7070/api/v1/auth/login
+POST {{host}}/api/v1/auth/login
 Content-Type: application/json
 
 {
-  "email": "SKRIV DEN NYE EMAILADRESSE HER",
-  "password": "SKRIV EN KODE HER"
+ "email": "{{admin_email}}",
+ "password": "{{admin_password}}"
 }
 
 
 ### Test Fejl: Registrer med ugyldig email
-POST http://localhost:7070/api/v1/auth/register
+POST {{host}}/api/v1/auth/register
 Content-Type: application/json
 
 {

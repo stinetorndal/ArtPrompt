@@ -1,6 +1,7 @@
 ### 1. Gem et billede for en eksisterende bruger (sørg for at userId matcher en bruger i din DB)
-POST http://localhost:7070/api/v1/images/save
+POST {{host}}/api/v1/images/save
 Content-Type: application/json
+Authorization: Bearer {{auth_token}}
 
 {
   "url": "https://images.unsplash.com/photo-1579783902614-a3fb3927b675",
@@ -11,13 +12,15 @@ Content-Type: application/json
 }
 
 ### Hent alle gemte billeder fra bruger
-GET http://localhost:7070/api/v1/images/user/1
+GET {{host}}/api/v1/images/user/{{user_id}}
 Authorization: Bearer {{auth_token}}
 Content-Type: application/json
 
 ### 3. Fejltest: Prøv at gemme et billede for en bruger der IKKE findes
-POST http://localhost:7070/api/v1/images/save
+POST {{host}}/api/v1/images/save
 Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
 
 {
   "url": "https://images.unsplash.com/photo-1579783902614-a3fb3927b675",

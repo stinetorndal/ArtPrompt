@@ -1,10 +1,10 @@
 ### 1. Login og gem token automatisk
-POST http://localhost:7070/api/v1/auth/login
+POST {{host}}/api/v1/auth/login
 Content-Type: application/json
 
 {
-  "email": "admin@test.dk",
-  "password": "FIND PASSWORD I NOTER"
+"email": "{{admin_email}}",
+"password": "{{admin_password}}"
 }
 
 > {%
@@ -12,17 +12,17 @@ Content-Type: application/json
 %}
 
 ### 2. Gem note med Authorization-header
-POST http://localhost:7070/api/v1/notes/save
+POST {{host}}/api/v1/notes/save
 Content-Type: application/json
 Authorization: Bearer {{auth_token}}
 
 {
   "text": "Dark Fantasy aesthetic Lord of the Rings",
-  "userId": 1
+  "userId": {{admin_id}}
 }
 
 
 ### Hent alle gemte noter fra bruger
-GET http://localhost:7070/api/v1/notes/user/6
+GET {{host}}/api/v1/notes/user/{{admin_id}}
 Content-Type: application/json
 Authorization: Bearer {{auth_token}}
