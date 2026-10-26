@@ -26,11 +26,11 @@ https://stinetorndal.github.io/portfolio_DAT3_2026/
 Deployed application:
 https://torndalchristensen.dk
 
-Source code repository:
-https://github.com/stinetorndal/ArtPrompt
-
 Route overview (all endpoints):
 https://torndalchristensen.dk/api/v1/routes
+
+Source code repository:
+https://github.com/stinetorndal/ArtPrompt
 
 ---
 
@@ -243,9 +243,6 @@ Protected endpoints require the header `Authorization: Bearer <token>`.
 Note: a browser address bar cannot send this header, so use an HTTP client
 (IntelliJ `.http` file, Postman, curl).
 
-A full list of endpoints with methods and roles is available at
-`https://torndalchristensen.dk/api/v1/routes`.
-
 Public endpoints (no login needed) can be opened directly in the browser, for example:
 `https://torndalchristensen.dk/api/v1/paintings/random`
 
@@ -255,12 +252,14 @@ Protected endpoints require the header `Authorization: Bearer <token>`.
 ### Log in
 
 ```
-POST /auth/login 
+POST /auth/login
+
 Example with curl:
 
-    curl -X POST https://torndalchristensen.dk/api/v1/auth/login \
-      -H "Content-Type: application/json" \
-      -d '{"email":"user@example.com","password":"secret"}'
+```bash
+curl -X POST https://torndalchristensen.dk/api/v1/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"user@example.com","password":"secret"}'
 ```
 
 Request body:
