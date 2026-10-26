@@ -1,6 +1,7 @@
 # API Documentation - ArtPrompt
 
 Base URL: `http://localhost:7070`
+Deployed base URL: `https://torndalchristensen.dk`
 
 | Method   | URL                                              | Request Body (JSON)        | Response (JSON)              | Error (e)                                                      |
 |:---------|:-------------------------------------------------|:---------------------------|:-----------------------------|:---------------------------------------------------------------|
