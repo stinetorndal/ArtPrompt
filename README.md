@@ -437,6 +437,27 @@ As an admin, I want to fetch paintings from the Rijksmuseum API using several th
 - Setting up HTTPS with Caddy and automatic updates with Watchtower
 
 ---
+# Security
+
+## Measures
+
+- **HTTPS** on all traffic through a reverse proxy (Caddy) with automatic certificates. The application port is not reachable from the internet.
+- **Authentication and roles:** JWT tokens (6 hours) with the roles `ANYONE`, `USER` and `ADMIN`. Protected endpoints are checked in a central security filter.
+- **Passwords** are hashed with BCrypt and validated for strength (length, uppercase letter, digit and special character).
+- **Rate limiting:** 20 requests per minute per client IP on all `/api/*` endpoints. The real client IP is read from the proxy's `X-Forwarded-For` header, which can only be set by the proxy.
+- **Database:** Not reachable from the internet. The application reaches it over an internal network, and administrators use an SSH tunnel.
+- **Server:** SSH accepts keys only (no passwords), brute-force attempts are blocked automatically (fail2ban), and a firewall only allows the ports that are needed.
+- **Secrets** (database password, JWT secret, API keys) are environment variables and are never stored in the repository.
+- **Fetch limits:** Only one Rijksmuseum fetch can run at a time, the number of threads is capped at 8, and fetching can be switched off with a setting.
+
+## Known limitations
+
+- **`userId` is sent by the client.** Endpoints for saved paintings, images and notes take the user id from the request instead of from the JWT. A logged-in user could therefore read or write another user's saved items. Planned fix: derive the user from the token.
+- **Login is protected by the rate limit only** (20 requests per minute per IP). There is no account lockout after repeated failed logins.
+- **Rate limit buckets are kept in memory.** They are not cleaned up and they reset when the application restarts.
+- **All user errors return status 400**, for example an already existing email. More precise codes (401 for wrong credentials, 409 for conflicts) would be better.
+
+---
 
 # License
 
