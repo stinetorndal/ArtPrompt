@@ -1,6 +1,7 @@
 package app.controllers;
 
 import app.exceptions.ApiException;
+import app.utils.RequestUtil;
 import io.github.bucket4j.Bandwidth;
 import io.github.bucket4j.Bucket;
 import io.github.bucket4j.Refill;
@@ -32,21 +33,10 @@ public class RateLimitController {
                 .build();
     }
 
-    //Metode til at håndtere den faktiske IP fordi alle beøgende deler bucket. Det bliver meget hurtigt 20 kald
-    private String getClientIp(Context ctx) {
-        String forwarded = ctx.header("X-Forwarded-For");
-        if (forwarded == null || forwarded.isBlank()) {
-            return ctx.ip();
-        }
-        //Headeren kan "holde" en liste fx "client, proxy". Første er klient
-        return forwarded.split(",")[0].trim();
-    }
-
-
     //Denne metode bruges i Javalins before-filter
     public void handleRateLimit(Context ctx) {
         //Find klientens IP-adresse
-        String clientIp = getClientIp(ctx);
+        String clientIp = RequestUtil.getClientIp(ctx);
         // Hent eksisterende bucket for denne IP, eller opret en ny hvis den ikke findes endnu
         Bucket bucket = buckets.computeIfAbsent(clientIp, ip -> createNewBucket());
         // Hvis bucket er tom for tokens

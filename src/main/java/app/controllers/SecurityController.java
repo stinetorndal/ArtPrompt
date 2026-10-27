@@ -4,6 +4,7 @@ import app.routes.Role;
 import app.utils.JwtUtils;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import app.utils.RequestUtil;
 import io.javalin.http.Context;
 import io.javalin.http.ForbiddenResponse;
 import io.javalin.http.HandlerType;
@@ -30,7 +31,7 @@ public class SecurityController {
         //Her hentes header,der SKAL starte med Bearer. Ellers kastes fejl
         String header = ctx.header("Authorization");
         if (header == null || !header.startsWith(BEARER_PREFIX)) {
-            logger.warn("Autentificering fejlede: Manglende eller forkert Authorization header fra IP: {} på rute: {}", ctx.ip(), ctx.path());
+            logger.warn("Autentificering fejlede: Manglende eller forkert Authorization header fra IP: {} på rute: {}", RequestUtil.getClientIp(ctx), ctx.path());
             throw new UnauthorizedResponse("Mangler 'Authorization: Bearer <token>' header");
         }
     //Her klippes Bearer af, så token er tilbage. Signatur og udløbstid checkes
@@ -42,7 +43,7 @@ public class SecurityController {
             //Ved fejl får klient samme genriske besked
             role = Role.valueOf(jwt.getClaim("role").asString());
         } catch (JWTVerificationException | IllegalArgumentException | NullPointerException e) {
-            logger.warn("Autentificering fejlede: Ugyldig/udløbet token fra IP: {}. Fejl: {}", ctx.ip(), e.getMessage());
+            logger.warn("Autentificering fejlede: Ugyldig/udløbet token fra IP: {}. Fejl: {}", RequestUtil.getClientIp(ctx), e.getMessage());
             throw new UnauthorizedResponse("Ugyldig eller udløbet token");
         }
 

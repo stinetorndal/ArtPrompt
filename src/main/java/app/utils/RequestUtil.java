@@ -36,5 +36,15 @@ public class RequestUtil {
             throw new ApiException(400, "Parameteren '" + paramName + "' skal være et gyldigt tal");
         }
     }
+
+    //Metode til at håndtere den faktiske IP fordi alle beøgende deler bucket. Det bliver meget hurtigt 20 kald
+    public static String getClientIp(Context ctx) {
+        String forwarded = ctx.header("X-Forwarded-For");
+        if (forwarded == null || forwarded.isBlank()) {
+            return ctx.ip();
+        }
+        //Headeren kan "holde" en liste fx "client, proxy". Første er klient
+        return forwarded.split(",")[0].trim();
+    }
 }
 
