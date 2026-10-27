@@ -52,7 +52,7 @@ public class UnsplashService {
                 return response.getSearchResult();
             }
         } catch (Exception e) {
-            logger.error("Fejl ved netværkskald til URL {}: {}", url, e.getMessage());
+            logger.error("Fejl ved hentning af billeder fra Unsplash for farven {}: {}", colorString, e.getMessage());
             throw new ApiException(500, "Fejl ved hentning af billeder");
         }
         logger.warn("Svaret fra Unsplash indeholdt ingen billeder for farven {}", colorString);

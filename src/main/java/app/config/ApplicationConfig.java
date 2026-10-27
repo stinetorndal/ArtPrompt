@@ -6,6 +6,8 @@ import app.dtos.MessageDTO;
 import app.exceptions.ApiException;
 import app.mappers.SavedPaintingMapper;
 import app.routes.Route;
+import app.utils.RequestUtil;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import app.services.*;
 import io.javalin.Javalin;
 import jakarta.persistence.EntityManagerFactory;
@@ -84,6 +86,11 @@ public class ApplicationConfig {
         app.exception(ApiException.class, (e, ctx) -> {
             ctx.status(e.getCode());
             ctx.json(new MessageDTO(e.getMessage()));
+        });
+        app.exception(JsonProcessingException.class, (e, ctx) ->{
+           logger.warn("Ugyldigt JSON-format fra IP: {} på rute {}", RequestUtil.getClientIp(ctx), ctx.path());
+           ctx.status(400);
+            ctx.json(new MessageDTO("Ugyldigt JSON-format"));
         });
         // Fanger alle uventede exceptions og logger dem med fuldt stacktrace
         app.exception(Exception.class, (e, ctx) -> {

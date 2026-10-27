@@ -36,7 +36,7 @@ public class APIService {
             if (response.statusCode() == 200) {
                 return response.body();
             }
-            logger.warn("Kald til {} gav status {}", url, status);
+            logger.warn("Kald til {} gav status {}", hideAPIKey(url), status);
             if (status == 429 || status >= 500) {
                 throw new RetryableApiException("Ekstern tjeneste midlertidigt utilgængelig");
             }
@@ -44,7 +44,7 @@ public class APIService {
         } catch (ApiException e) {
             throw e;                                  // Egne fejl passerer uændret
         } catch (IOException e) {
-            logger.warn("Netværksfejl eller timeout for {}: {}", url, e.getMessage());
+            logger.warn("Netværksfejl eller timeout for {}: {}", hideAPIKey(url), e.getMessage());
             throw new RetryableApiException("Netværksfejl eller timeout");
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
@@ -64,5 +64,10 @@ public class APIService {
     public <T> T fetchAndConvert(String url, Class<T> tClass) {
         String json = readAPI(url);
         return convertFromJson(json, tClass);
+    }
+
+    //Skjuler API-nøgle i en url før den skrives i loggen
+    private String hideAPIKey(String url){
+        return url.replaceAll("client_id=[^&]*", "client_id=***");
     }
 }
