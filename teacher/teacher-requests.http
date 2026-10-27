@@ -1,0 +1,36 @@
+### ArtPrompt: test requests for reviewers
+### All requests are public (no login) and only read data. Nothing is saved.
+### Run a request with the green arrow next to it.
+@baseUrl = https://torndalchristensen.dk
+
+### 1. Overview of all routes and roles (HTML page)
+GET {{baseUrl}}/api/v1/routes
+
+### 2. List of prompt categories
+GET {{baseUrl}}/api/v1/prompts/categories
+
+### 3. One random word from each of two categories
+GET {{baseUrl}}/api/v1/prompts/random?cat1=MOOD&cat2=ANIMALS
+
+### 4. Five random paintings from the catalog
+GET {{baseUrl}}/api/v1/paintings/random
+
+### 5. Ten images in a color (YELLOW, RED, BLUE, BLACK, WHITE, GREEN, PURPLE, ORANGE)
+GET {{baseUrl}}/api/v1/unsplash/color?color=RED
+
+### Error examples
+
+### 6. Invalid category gives 400
+GET {{baseUrl}}/api/v1/prompts/random?cat1=XXX&cat2=YYY
+
+### 7. Invalid color gives 400
+GET {{baseUrl}}/api/v1/unsplash/color?color=XXX
+
+### 8. Protected endpoint without a token gives 401
+GET {{baseUrl}}/api/v1/images/user/1
+
+### 9. Broken JSON (the body is incomplete on purpose) gives 400
+POST {{baseUrl}}/api/v1/auth/login
+Content-Type: application/json
+
+{"email":

@@ -28,27 +28,29 @@ public class UnsplashService {
     }
 
     public List<PhotoDTO> getPicturesWithPickedColor(Color color) {
-
-        //Konverterer Enum (fx YELLOW) til små bogstaver
         String colorString = color.name().toLowerCase();
 
         //Unsplash cacher så man kan ikke bruge random direkte. Derfor er jeg nøndt til at bruge Random-klassen og
         //vælge et vilkårligt sidenummer mellem 1-x hver gang. (kan ændres efter behov)
         int randomPage = random.nextInt(50) + 1;
-           //Unsplash sender som standard 10 billeder
-        String url = "https://api.unsplash.com/search/photos?query="
-                + colorString
-                + "&color=" + colorString
-                + "&page=" + randomPage
-                + "&per_page=10"
-                + "&order_by=random"
-                + "&client_id=" + System.getenv("API_KEY");
 
+        List<PhotoDTO> photos = fetchPage(colorString, randomPage);
+        if (photos.isEmpty() && randomPage != 1) {
+            logger.info("Side {} var tom for farven {}, prøver side 1", randomPage, colorString);
+            photos = fetchPage(colorString, 1);
+        }
+        return photos;
+    }
+
+    // Fetcher en side med billeder (10) fra Unsplash. Returner tom liste hvis siden var tom fx orange)
+    private List<PhotoDTO> fetchPage(String colorString, int page) {
+        String url = buildSearchUrl(colorString, page);
         try {
             //Mapper til SearchDTO da json-response er et objekt
             SearchDTO response = apiService.fetchAndConvert(url, SearchDTO.class);
             if (response != null && response.getSearchResult() != null) {
-                logger.info("Hentede {} billeder fra Unsplash for farven {}", response.getSearchResult().size(), colorString);
+                logger.info("Hentede {} billeder fra Unsplash for farven {}",
+                        response.getSearchResult().size(), colorString, page);
                 return response.getSearchResult();
             }
         } catch (Exception e) {
@@ -57,5 +59,16 @@ public class UnsplashService {
         }
         logger.warn("Svaret fra Unsplash indeholdt ingen billeder for farven {}", colorString);
         return new ArrayList<>();
+    }
+
+    private String buildSearchUrl(String colorString, int page) {
+        //Unsplash sender som standard 10 billeder
+        return "https://api.unsplash.com/search/photos?query="
+                + colorString
+                + "&color=" + colorString
+                + "&page=" + page
+                + "&per_page=10"
+                + "&order_by=random"
+                + "&client_id=" + System.getenv("API_KEY");
     }
 }

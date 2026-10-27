@@ -28,6 +28,18 @@
                     .sign(ALGORITHM);
         }
 
+        //Bygger token er også har user_id, så server kan se id uden bare at tillade body
+        public static String createToken (String email, String role, Long userId){
+            Instant now = Instant.now(); //gemmer tidspunkt lige nu
+            return JWT.create()
+                    .withSubject(email) //hvem er token til
+                    .withClaim("role", role)
+                    .withClaim("userId", userId)
+                    .withIssuedAt(now) //Hvornår blev det lavet
+                    .withExpiresAt(now.plus(EXPIRATION_HOURS, ChronoUnit.HOURS))
+                    .sign(ALGORITHM);
+        }
+
         //Denne metode checker signatur og udløbstid på en klients token
         public static DecodedJWT verifyToken (String token){
             return VERIFIER.verify(token);

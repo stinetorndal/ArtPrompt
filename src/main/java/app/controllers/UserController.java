@@ -32,7 +32,7 @@
         }
         //Hjælpemetode - laver token ud fra brugerens rolle
         private void respondWithToken(Context ctx, int status, UserDTO userDTO){
-            String token = JwtUtils.createToken(userDTO.getEmail(), userDTO.getRole().name());
+            String token = JwtUtils.createToken(userDTO.getEmail(), userDTO.getRole().name(), userDTO.getId());
 
             ctx.status(status).json(Map.of(
                     "token", token,

@@ -39,7 +39,7 @@ public class SecurityController {
         Role role;
         try {
             jwt = JwtUtils.verifyToken(header.substring(BEARER_PREFIX.length()));
-            //Laver  tekststreng fra token om til ENUM
+            //Laver tekststreng fra token om til ENUM
             //Ved fejl får klient samme genriske besked
             role = Role.valueOf(jwt.getClaim("role").asString());
         } catch (JWTVerificationException | IllegalArgumentException | NullPointerException e) {
@@ -48,6 +48,11 @@ public class SecurityController {
         }
 
         String email = jwt.getSubject();
+        // Userid fra token, tokens fra før denne metode havde ikke userId
+        Long userId = jwt.getClaim("userId").asLong(); // jwt = token, der lig eer åbnet og kontrolleret
+        if(userId == null){
+            ctx.attribute("userId", userId);
+        }
         ctx.attribute("userEmail", email);
         ctx.attribute("userRole", role);
 
