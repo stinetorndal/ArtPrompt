@@ -296,6 +296,19 @@ These can be opened directly in the browser.
 | POST | `/api/v1/auth/register` | Create an account (`email`, `password`) | 400 |
 | POST | `/api/v1/auth/login` | Log in and receive a JWT | 400 |
 
+**Try these in the browser (no login needed):**
+
+- Routes overview: https://torndalchristensen.dk/api/v1/routes
+- Categories: https://torndalchristensen.dk/api/v1/prompts/categories
+- Random words from two categories: https://torndalchristensen.dk/api/v1/prompts/random?cat1=MOOD&cat2=ANIMALS
+- Random paintings: https://torndalchristensen.dk/api/v1/paintings/random
+- Images by color: https://torndalchristensen.dk/api/v1/unsplash/color?color=RED
+
+Categories: `SEASONS`, `CREATURE`, `PLACES`, `ANIMALS`, `OBJECTS`, `PATTERNS`, `MOVEMENT`, `MOOD`.
+Colors: `YELLOW`, `RED`, `BLUE`, `BLACK`, `WHITE`, `GREEN`, `PURPLE`, `ORANGE`.
+
+A ready-made request file for IntelliJ is in `teacher/teacher-requests.http`.
+
 ### User endpoints (role `USER` or `ADMIN`)
 
 These require `Authorization: Bearer <token>`, so use an HTTP client such as an IntelliJ `.http` file, Postman or curl.
