@@ -19,12 +19,12 @@ public class Route {
     private final NoteController noteController;
     private final RijksmuseumController rijksmuseumController;
     private final SavedPaintingController savedPaintingController;
-
+    private final HealthController healthController;
 
     public Route(UserController userController, PromptWordController promptWordController,
                  UnsplashController unsplashController, SavedImageController savedImageController,
                  NoteController noteController, RijksmuseumController rijksmuseumController,
-                 SavedPaintingController savedPaintingController) {
+                 SavedPaintingController savedPaintingController, HealthController healthController) {
         this.userController = userController;
         this.promptWordController = promptWordController;
         this.unsplashController = unsplashController;
@@ -32,12 +32,14 @@ public class Route {
         this.noteController = noteController;
         this.rijksmuseumController = rijksmuseumController;
         this.savedPaintingController = savedPaintingController;
+        this.healthController = healthController;
     }
 
     public EndpointGroup getRoutes() {
         return () -> {
             //Welcome
             get("/", ctx -> ctx.result("Welcome to ArtPrompt API"), Role.ANYONE);
+            get("/health", healthController::check, Role.ANYONE);
 
             path("/api/v1", () -> {
 

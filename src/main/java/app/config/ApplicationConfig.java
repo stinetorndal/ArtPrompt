@@ -58,6 +58,8 @@ public class ApplicationConfig {
 
         RateLimitController rateLimitController = new RateLimitController();
 
+        HealthController healthController = new HealthController(emf);
+
         Route route = new Route(
                 userController,
                 promptWordController,
@@ -65,7 +67,8 @@ public class ApplicationConfig {
                 savedImageController,
                 noteController,
                 rijksmuseumController,
-                savedPaintingController
+                savedPaintingController,
+                healthController
                 );
 
         // 2. Opret Javalin
