@@ -49,8 +49,8 @@ public class SecurityController {
 
         String email = jwt.getSubject();
         // Userid fra token, tokens fra før denne metode havde ikke userId
-        Long userId = jwt.getClaim("userId").asLong(); // jwt = token, der lig eer åbnet og kontrolleret
-        if(userId == null){
+        Long userId = jwt.getClaim("userId").asLong(); // jwt = token, der lige er åbnet og kontrolleret
+        if(userId != null){
             ctx.attribute("userId", userId);
         }
         ctx.attribute("userEmail", email);

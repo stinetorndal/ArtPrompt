@@ -21,6 +21,8 @@ public class SavedPaintingController {
     public void savePainting(Context ctx) {
 
         SavedPaintingDTO inputDTO = ctx.bodyAsClass(SavedPaintingDTO.class);
+        //Bruger kommer fra token, userId i body ignoreres
+        inputDTO.setUserId(RequestUtil.getAuthenticatedUserId(ctx));
         SavedPaintingDTO resultDTO = savedPaintingService.savePaintingForUser(inputDTO);
 
         logger.info("Gemte billede for bruger ID: {}", resultDTO.getUserId());
@@ -29,6 +31,7 @@ public class SavedPaintingController {
 
     public void getSavedPaintingsByUser(Context ctx) {
         Long userId = RequestUtil.getLongPathParam(ctx, "userId");
+        RequestUtil.ensureOwnerIsAdminOrUser(ctx, userId);
         List<SavedPaintingDTO> paintingDTOs = savedPaintingService.getSavedPaintingsByUserId(userId);
         logger.info("Hentede {} gemte billeder for bruger ID: {}", paintingDTOs.size(), userId);
 

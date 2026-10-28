@@ -20,6 +20,8 @@ public class SavedImageController {
     public void saveImage(Context ctx) {
 
         SavedImageDTO inputDTO = ctx.bodyAsClass(SavedImageDTO.class);
+        //Bruger kommer fra token, userId i body ignoreres
+        inputDTO.setUserId(RequestUtil.getAuthenticatedUserId(ctx));
         SavedImageDTO resultDTO = savedImageService.saveImageForUser(inputDTO);
 
         logger.info("Gemte billede for bruger ID: {}", resultDTO.getUserId());
@@ -28,6 +30,7 @@ public class SavedImageController {
 
     public void getSavedImagesByUser(Context ctx) {
         Long userId = RequestUtil.getLongPathParam(ctx, "userId");
+        RequestUtil.ensureOwnerIsAdminOrUser(ctx, userId);
         List<SavedImageDTO> imageDTOs = savedImageService.getSavedImagesByUserId(userId);
         logger.info("Hentede {} gemte billeder for bruger ID: {}", imageDTOs.size(), userId);
 

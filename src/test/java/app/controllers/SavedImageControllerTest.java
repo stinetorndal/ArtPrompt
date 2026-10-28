@@ -3,6 +3,11 @@ package app.controllers;
 import app.dtos.savedimages.SavedImageDTO;
 import app.services.SavedImageService;
 import io.javalin.http.Context;
+import app.exceptions.ApiException;
+import app.routes.Role;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -34,6 +39,8 @@ class SavedImageControllerTest {
 
         //Simulerer brugerdto med i requestbody
         when(ctxMock.bodyAsClass(SavedImageDTO.class)).thenReturn(dto);
+        //Controller tager bruger fra token
+        when(ctxMock.<Long>attribute("userId")).thenReturn(1L);
         //Service returnerer samme dto
         when(serviceMock.saveImageForUser(dto)).thenReturn(dto);
         //Sikrer fx ctx.status .json virker på mock
@@ -49,8 +56,11 @@ class SavedImageControllerTest {
 
     @Test
     void testGetSavedImagesByUser() {
-        //ARRANGE: imuler URL indeholder ID "1"
+        //ARRANGE: simuler URL indeholder ID "1"
         when(ctxMock.pathParam("userId")).thenReturn("1");
+        //Logget ind som User 1, spørger efter bruger 1's billeder
+        when(ctxMock.<Long>attribute("userId")).thenReturn(1L);
+        when(ctxMock.<Role>attribute("userRole")).thenReturn(Role.USER);
         when(serviceMock.getSavedImagesByUserId(1L)).thenReturn(List.of());
         when(ctxMock.status(200)).thenReturn(ctxMock);
 
@@ -59,5 +69,20 @@ class SavedImageControllerTest {
 
         //ASSERT: Status 200
         verify(ctxMock).status(200);
+    }
+
+    @Test
+    void testGetSavedImagesForOtherUserIsForbidden () {
+        //Logget ind som bruger 1 og spørger om bruger 2's billeder
+        //ARRANGE: simuler URL indeholder ID "1"
+        when(ctxMock.pathParam("userId")).thenReturn("2");
+        when(ctxMock.<Long>attribute("userId")).thenReturn(1L);
+        when(ctxMock.<Role>attribute("userRole")).thenReturn(Role.USER);
+
+        ApiException exception = assertThrows(ApiException.class,
+                () -> controller.getSavedImagesByUser(ctxMock));
+
+        assertEquals(403, exception.getCode());
+        verifyNoInteractions(serviceMock);
     }
 }

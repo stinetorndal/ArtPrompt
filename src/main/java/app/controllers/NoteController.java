@@ -19,6 +19,8 @@ public class NoteController {
 
     public void saveNote(Context ctx) {
         NoteDTO inputDTO = ctx.bodyAsClass(NoteDTO.class);
+        //Bruger kommer fra token, userId i body ignoreres
+        inputDTO.setUserId(RequestUtil.getAuthenticatedUserId(ctx));
         NoteDTO resultDTO = noteService.saveNoteForUser(inputDTO);
 
         logger.info("Gemte ny note for bruger ID: {}", resultDTO.getUserId());
@@ -27,6 +29,7 @@ public class NoteController {
 
     public void getSavedNotesByUser(Context ctx) {
         Long userId = RequestUtil.getLongPathParam(ctx,"userId");
+        RequestUtil.ensureOwnerIsAdminOrUser(ctx, userId);
         List<NoteDTO> noteDTOS = noteService.getSavedNotesByUserId(userId);
         logger.info("Hentede {} noter for bruger ID: {}",  noteDTOS.size(), userId);
 
