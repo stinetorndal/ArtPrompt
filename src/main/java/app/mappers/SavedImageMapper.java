@@ -4,7 +4,8 @@ import app.dtos.savedimages.SavedImageDTO;
 import app.entities.SavedImage;
 import app.entities.User;
 
-public class SavedImageMapper {
+public class
+SavedImageMapper {
 
     public SavedImageDTO toDTO(SavedImage image) {
         if (image == null) return null;

@@ -14,7 +14,7 @@ import java.util.List;
 public class UserDAO implements IDAO<User, Long> { //JPA-standar er Long
 
     private static final Logger logger = LoggerFactory.getLogger(UserDAO.class); //UserDAO fortæller logger hvor fejlen kommer fra
-    private EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
+    private final EntityManagerFactory emf;
 
     public UserDAO(EntityManagerFactory emf) {
         this.emf = emf;
