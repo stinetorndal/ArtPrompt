@@ -44,12 +44,11 @@ public class RequestUtil {
         if (forwarded == null || forwarded.isBlank()) {
             return ctx.ip();
         }
-        //Headeren kan "holde" en liste fx "client, proxy". Første er klient
         return forwarded.split(",")[0].trim();
     }
 
     // Returnerer id fra user, der er logget ind. Tages fra token, ikke request
-    public static Long getAuthenticatedUserId(Context ctx){
+    public static Long getAuthenticatedUserId(Context ctx) {
         Long userId = ctx.attribute("userId");
         if (userId == null) {
             throw new ApiException(401, "Log ind igen for at få opdateret token");
@@ -58,12 +57,12 @@ public class RequestUtil {
     }
 
     // Request komer kun igennem hvis bruger ejer data eller er admin
-    public static void ensureOwnerIsAdminOrUser(Context ctx, Long requestedUserId){
+    public static void ensureOwnerIsAdminOrUser(Context ctx, Long requestedUserId) {
         Long tokenUserId = getAuthenticatedUserId(ctx);
         Role role = ctx.attribute("userRole");
-        boolean isAdmin= role == Role.ADMIN;
+        boolean isAdmin = role == Role.ADMIN;
 
-        if (!isAdmin && !tokenUserId.equals(requestedUserId)){
+        if (!isAdmin && !tokenUserId.equals(requestedUserId)) {
             logger.warn("Adgang nægtet: bruger {} forsøgte at tilgå data for bruger {} fra IP: {}",
                     tokenUserId, requestedUserId, getClientIp(ctx));
             throw new ApiException(403, "Der er ikke adgang til andre brugeres data");

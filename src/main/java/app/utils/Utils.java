@@ -24,7 +24,6 @@ public class Utils {
 
         // 2. Læs fra .properties-filen hvis miljøvariabel ikke er sat
         try (InputStream is = Utils.class.getClassLoader().getResourceAsStream(resourceName)) {
-            // Tjek om filen findes, så vi undgår NullPointerException på GitHub Actions
             if (is == null) {
                 throw new ApiException(500, String.format("Property file %s not found in classpath.", resourceName));
             }
