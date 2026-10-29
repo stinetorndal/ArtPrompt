@@ -7,9 +7,9 @@ import app.entities.SavedPainting;
 import app.entities.User;
 import app.entities.Painting;
 
+//Oversætter objekt fra JPA til API og omvendt
 public class SavedPaintingMapper {
 
-    //Konverterer Rijksmuseums API-svar til  det JSON jeg vil sende ud i mit eget API
     public SavedPaintingDTO fromApiDTO (PaintingDTO paintingDTO, ArtistCategory artistCategory) {
         if (paintingDTO == null) return null;
 
@@ -27,8 +27,8 @@ public class SavedPaintingMapper {
                 null
         );
     }
-    //Behøver ikke logger, det er bare forkert årstal
-    //Returnerer null hvis årstal mangler eller ikke kan læses som heltal, så koden kan køre videre
+
+        //Returnerer null hvis årstal mangler eller ikke kan læses som heltal, så koden kan køre videre
         private Integer parseYear(String yearString) {
         if (yearString == null) return null;
         try {

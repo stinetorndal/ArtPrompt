@@ -4,6 +4,7 @@ import app.dtos.note.NoteDTO;
 import app.entities.Note;
 import app.entities.User;
 
+//Oversætter objekt fra JPA til API og omvendt
 public class NoteMapper {
 
     public NoteDTO toDTO(Note note) {

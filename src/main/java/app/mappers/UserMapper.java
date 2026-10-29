@@ -3,10 +3,9 @@ package app.mappers;
 import app.dtos.user.UserDTO;
 import app.entities.User;
 
-//Denne klasse har til opgave en konverte entitet <-> DTO
+//Oversætter objekt fra JPA til API og omvendt
 public class UserMapper {
 
-    //Fra entitet til DTO:
     //Hvis bruger ikke findes, går app'en ned med status 500. Nu returnerer den i stedet null
     public UserDTO toDTO (User user) {
         if (user == null){
@@ -15,7 +14,6 @@ public class UserMapper {
         return new UserDTO(user);
     }
 
-    //Fra DTO til entitet:
     public User toEntity (UserDTO userDTO) {
         if (userDTO == null) {
             return null;

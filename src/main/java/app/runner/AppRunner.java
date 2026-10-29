@@ -2,16 +2,12 @@ package app.runner;
 
 import app.config.ApplicationConfig;
 import app.config.HibernateConfig;
-import app.dtos.rijksmuseum.PaintingDTO;
-import app.entities.ArtistCategory;
 import app.services.RijksmuseumService;
 import app.services.UnsplashService;
 import app.utils.PromptWordSeeder;
 import jakarta.persistence.EntityManagerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.List;
 
 public class AppRunner {
     private UnsplashService unsplashService = new UnsplashService();

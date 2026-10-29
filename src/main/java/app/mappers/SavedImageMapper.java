@@ -4,6 +4,7 @@ import app.dtos.savedimages.SavedImageDTO;
 import app.entities.SavedImage;
 import app.entities.User;
 
+//Oversætter objekt fra JPA til API og omvendt
 public class
 SavedImageMapper {
 
