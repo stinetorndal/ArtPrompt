@@ -12,6 +12,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
+
+//Denne klasse håndterer bruger
 public class UserDTO {
     private Long id;
     private String email;

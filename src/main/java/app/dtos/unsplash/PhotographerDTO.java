@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown=true)
+
 //Denne klasse trækker fotograf-navn ud af Json-objekt
 public class PhotographerDTO {
 

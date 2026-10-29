@@ -10,7 +10,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-// griber titlen under identified_by. I Rijksmuseum ligger info pakket ind i objekter der er pakket ind i 0bjekter
+
+// griber titlen under identified_by
 public class NameDTO {
 
     @JsonProperty("content")

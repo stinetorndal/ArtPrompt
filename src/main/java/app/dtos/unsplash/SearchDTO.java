@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown=true)
 
-//Her vil jeg gerne kunne søge på en farve
+//Denne klase skal bruges til at kunne søge på farve, defineret i ENUM
 //Wrapper-class - tager imod hele json-objekt fra Unsplash, smider overskydende væk og leverer en Liste "results"
 
 public class SearchDTO {

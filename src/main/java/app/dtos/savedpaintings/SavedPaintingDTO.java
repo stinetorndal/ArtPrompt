@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown=true)
-//Denne klasse modtager data for hvert enkelt maleri og trækker de felter ud, jeg skal bruge
 
+//Denne klasse modtager data for hvert enkelt maleri og trækker de felter ud, der skal bruges
 public class SavedPaintingDTO {
     private String externalId; //id fra Rijksmuseum. Checker i DB om bruger har maleri gemt
     private String title;

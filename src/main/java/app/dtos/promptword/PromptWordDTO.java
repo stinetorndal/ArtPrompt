@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
+
 //Denne klasse bruges at levere færdigt PromptWord-objekt = to ord
 public class PromptWordDTO {
     private String word1;

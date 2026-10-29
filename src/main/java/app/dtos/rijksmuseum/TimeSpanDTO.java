@@ -10,7 +10,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-// griber startdato. I Rijksmuseum ligger info pakket ind i objekter der er pakket ind i 0bjekter
+
+// Håndterer startdato. I Rijksmuseum ligger info pakket ind i objekter der er pakket ind i 0bjekter
 public class TimeSpanDTO {
 
     @JsonProperty("begin_of_the_begin")

@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-//Denne klasse skal gemme brugerdata i DB
+//Denne klasse håndterer bruger-persistens
 public class UserDAO implements IDAO<User, Long> { //JPA-standar er Long
 
     private static final Logger logger = LoggerFactory.getLogger(UserDAO.class); //UserDAO fortæller logger hvor fejlen kommer fra

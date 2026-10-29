@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
+//Denne klasse håndterer Note-persistens
 public class NoteDAO  implements IDAO<Note, Long>{
 
         private static final Logger logger = LoggerFactory.getLogger(app.dao.NoteDAO.class);

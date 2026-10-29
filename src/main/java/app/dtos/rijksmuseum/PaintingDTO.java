@@ -14,6 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
+
 //Rijksmuseum har oplysninger pakket ind i mange underobjekter, deraf strukturen
 public class PaintingDTO {
 

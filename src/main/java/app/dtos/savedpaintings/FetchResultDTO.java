@@ -7,7 +7,7 @@ import java.util.List;
 
 @AllArgsConstructor
 @Getter
-//Hører til Threads
+//Hører til Threads og bruges til at tælle stats for fetching
 public class FetchResultDTO {
     private long totalDurationMs;
     private int threadsUsed;

@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown=true)
 
+//Denne klasse håndterer JSON-felter på det billede, bruger vil gemme
 public class SavedImageDTO {
     private Long id;
     private String url;

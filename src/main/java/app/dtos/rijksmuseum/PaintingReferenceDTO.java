@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
+
 // Modtager id-url på det enkelte maleri fra søgningen
 public class PaintingReferenceDTO {
 

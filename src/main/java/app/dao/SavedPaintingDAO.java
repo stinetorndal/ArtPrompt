@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-
+//Denne klasse håndterer SavedPainting-persistens
 public class SavedPaintingDAO implements IDAO<SavedPainting, Long> {
 
     private static final Logger logger = LoggerFactory.getLogger(SavedImageDAO.class);

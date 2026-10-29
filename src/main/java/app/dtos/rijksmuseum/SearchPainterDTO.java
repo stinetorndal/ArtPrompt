@@ -12,6 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
+
 // Modtager listen fra søgningen der kun indeholder id
 public class SearchPainterDTO {
 

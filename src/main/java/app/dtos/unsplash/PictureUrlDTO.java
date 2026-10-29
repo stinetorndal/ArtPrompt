@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown=true)
+
 //Denne klasse trækker download-link ud af url-objektet
 public class PictureUrlDTO {
 

@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
+//Denne klasse håndterer SavedImage-persistens
 public class SavedImageDAO implements IDAO<SavedImage, Long> {
 
     private static final Logger logger = LoggerFactory.getLogger(SavedImageDAO.class);

@@ -14,10 +14,11 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
+
+//Denne klasse håndterer at nogle få malerier har flere årstal tilknyttet og defor sendes som liste af objekter
 public class ProductionDTO {
 
     @JsonProperty("timespan")
-    //Ændret fordi få malerier sendes som liste af objekter, da de har flere årstal for maleriets udførelse
     @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY) //Et objekt = jackson pakker det ind som liste af objekter
     private List<TimeSpanDTO> timespan;
 }

@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Getter
 @JsonIgnoreProperties(ignoreUnknown = true)
+
 // Håndterer selve image-objektet med contentUrl
 public class ImageDTO {
 
