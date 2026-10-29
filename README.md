@@ -106,8 +106,6 @@ The project originally included a `ui` package.
 It was fully commented out, until a decision had been made as to what to do with it.
 The code has been saved in a document as it serves as a roadmap for the frontend part.
 
-- The last version containing the UI can be found in commit `UI classes commented out. Message to incorrect password registration changed stinetorndal 26-10-2026 16:52`.
-
 ---
 
 # Data Model
