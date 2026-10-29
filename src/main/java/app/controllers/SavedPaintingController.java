@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
+//Denne klasse håndterer bruger ift malerier fra databasen, fetchet fra Rijksmuseum
 public class SavedPaintingController {
 
     private static final Logger logger = LoggerFactory.getLogger(SavedPaintingController.class);
@@ -17,11 +18,11 @@ public class SavedPaintingController {
     public SavedPaintingController(SavedPaintingService savedPaintingService) {
         this.savedPaintingService = savedPaintingService;
     }
-
+    //Gemmer malerie fra Rijksmuseum(i DB). Bruger kommer fra token, userId i body ignoreres
     public void savePainting(Context ctx) {
 
         SavedPaintingDTO inputDTO = ctx.bodyAsClass(SavedPaintingDTO.class);
-        //Bruger kommer fra token, userId i body ignoreres
+
         inputDTO.setUserId(RequestUtil.getAuthenticatedUserId(ctx));
         SavedPaintingDTO resultDTO = savedPaintingService.savePaintingForUser(inputDTO);
 
@@ -29,6 +30,7 @@ public class SavedPaintingController {
         ctx.status(201).json(resultDTO);
     }
 
+    //Henter de billeder, given bruger har gemt
     public void getSavedPaintingsByUser(Context ctx) {
         Long userId = RequestUtil.getLongPathParam(ctx, "userId");
         RequestUtil.ensureOwnerIsAdminOrUser(ctx, userId);

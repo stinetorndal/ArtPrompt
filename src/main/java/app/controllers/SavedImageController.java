@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
+//Denne klasse håndterer bruger ift billeder fra Unsplash
 public class SavedImageController {
     private static final Logger logger = LoggerFactory.getLogger(SavedImageController.class);
     private final SavedImageService savedImageService;
@@ -17,10 +18,11 @@ public class SavedImageController {
         this.savedImageService = savedImageService;
     }
 
+    //Gemmer Billede fra Unsplash, bruger kommer fra token, userId i body ignoreres
     public void saveImage(Context ctx) {
 
         SavedImageDTO inputDTO = ctx.bodyAsClass(SavedImageDTO.class);
-        //Bruger kommer fra token, userId i body ignoreres
+
         inputDTO.setUserId(RequestUtil.getAuthenticatedUserId(ctx));
         SavedImageDTO resultDTO = savedImageService.saveImageForUser(inputDTO);
 
@@ -28,6 +30,7 @@ public class SavedImageController {
         ctx.status(201).json(resultDTO);
     }
 
+    //Henter brugers billeder
     public void getSavedImagesByUser(Context ctx) {
         Long userId = RequestUtil.getLongPathParam(ctx, "userId");
         RequestUtil.ensureOwnerIsAdminOrUser(ctx, userId);

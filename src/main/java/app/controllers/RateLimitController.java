@@ -17,17 +17,15 @@ import java.util.concurrent.ConcurrentHashMap;
 public class RateLimitController {
 
     Logger logger = LoggerFactory.getLogger(RateLimitController.class);
-    //En bucket til at rumme antal kald oprettes her
+
     private final Map<String, Bucket> buckets = new ConcurrentHashMap<>();
 
-
-    //Hjælpemetode: Her oprettes en ny Bucket for en klient
+    //Hjælpemetode: Her oprettes en ny Bucket for en klient, der genopfylder hvert minut. Max 20 tokens
     private Bucket createNewBucket() {
-        //Genopfyld 20 tokens hvert minut
+
         Refill refill = Refill.intervally(20, Duration.ofMinutes(1));
-        //Sæt max kapacitet til 20 tokens
+
         Bandwidth limit = Bandwidth.classic(20, refill);
-        //Byg og returnér færdige bucket
         return Bucket.builder()
                 .addLimit(limit)
                 .build();
@@ -35,13 +33,13 @@ public class RateLimitController {
 
     //Denne metode bruges i Javalins before-filter
     public void handleRateLimit(Context ctx) {
-        //Find klientens IP-adresse
+
         String clientIp = RequestUtil.getClientIp(ctx);
         // Hent eksisterende bucket for denne IP, eller opret en ny hvis den ikke findes endnu
         Bucket bucket = buckets.computeIfAbsent(clientIp, ip -> createNewBucket());
-        // Hvis bucket er tom for tokens
+
         if (!bucket.tryConsume(1)) {
-            // Hvis der ikke er flere tokens tilbage, kastes en HTTP 429
+
             logger.warn("Rate limit overskredet for IP: {} på route: {}", clientIp, ctx.path());
             throw new ApiException(429, "Too Many Requests - Du har overskredet grænsen på 20 kald pr. minut.");
         }

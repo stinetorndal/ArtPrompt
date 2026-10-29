@@ -22,13 +22,13 @@ public class SecurityController {
     //Start på header. En klient sender Authorization: Bearer[token]
     private static final String BEARER_PREFIX = "Bearer ";
 
-    // 1.CHECKER token og gemmer brugeroplysninger på context
+    // Tjekker token,gemmer brugeroplysninger på context
     public void authenticate(Context ctx) {
-        //OPTIONS er browsers CORS-request eller off. route = metoden skal stoppe
+
         if (ctx.method() == HandlerType.OPTIONS || isPublic(ctx)) {
             return;
         }
-        //Her hentes header,der SKAL starte med Bearer. Ellers kastes fejl
+
         String header = ctx.header("Authorization");
         if (header == null || !header.startsWith(BEARER_PREFIX)) {
             logger.warn("Autentificering fejlede: Manglende eller forkert Authorization header fra IP: {} på rute: {}", RequestUtil.getClientIp(ctx), ctx.path());
@@ -39,16 +39,14 @@ public class SecurityController {
         Role role;
         try {
             jwt = JwtUtils.verifyToken(header.substring(BEARER_PREFIX.length()));
-            //Laver tekststreng fra token om til ENUM
-            //Ved fejl får klient samme genriske besked
+
             role = Role.valueOf(jwt.getClaim("role").asString());
         } catch (JWTVerificationException | IllegalArgumentException | NullPointerException e) {
             logger.warn("Autentificering fejlede: Ugyldig/udløbet token fra IP: {}. Fejl: {}", RequestUtil.getClientIp(ctx), e.getMessage());
             throw new UnauthorizedResponse("Ugyldig eller udløbet token");
         }
-
         String email = jwt.getSubject();
-        // Userid fra token, tokens fra før denne metode havde ikke userId
+
         Long userId = jwt.getClaim("userId").asLong(); // jwt = token, der lige er åbnet og kontrolleret
         if(userId != null){
             ctx.attribute("userId", userId);
@@ -74,10 +72,9 @@ public class SecurityController {
                     userEmail, userRole, ctx.path(), allowed);
             throw new ForbiddenResponse("Ingen adgang. Kræver en af følgende roller: " + allowed);
         }
-
         logger.debug("Bruger {} autoriseret (Rolle: {}) til rute: {}", userEmail, userRole, ctx.path());
     }
-
+    //Tjekker om et endpoint er public og ikke kræver login
     private static boolean isPublic(Context ctx) {
         Set<RouteRole> roles = ctx.routeRoles();
         return roles.isEmpty() || roles.contains(Role.ANYONE);

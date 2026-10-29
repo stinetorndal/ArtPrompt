@@ -7,7 +7,7 @@
 
     import java.util.Map;
 
-    //Håndterer http-forespørgsler og -svar
+    //Håndterer http-forespørgsler og -svar ift bruger
     public class UserController {
 
         private final UserService userService;

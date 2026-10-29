@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
+//Denne klasse håndterer kategori-prompts-forespørgsler
 public class PromptWordController {
     private static final Logger logger = LoggerFactory.getLogger(PromptWordController.class);
     private final PromptService promptService;
@@ -24,13 +25,12 @@ public class PromptWordController {
         ctx.status(200).json(categories);
     }
 
+    //Henter brugervalg fra URL (query parameters) og genererer DTO ud fra valg
     public void getRandomPrompt(Context ctx) {
-        // 1. Hent brugerens valg fra URL'en (query parameters)
+
         PromptCategory cat1 = RequestUtil.getEnumQueryParam(ctx, "cat1", PromptCategory.class);
         PromptCategory cat2 = RequestUtil.getEnumQueryParam(ctx, "cat2", PromptCategory.class);
 
-
-        // 4. Generer DTO ud fra brugerens kategori-valg
         PromptWordDTO dto = promptService.generatePromptWordDTO(cat1, cat2);
         logger.info("Genererede prompt-ord for kategorierne {} og {}", cat1.name(), cat2.name());
         ctx.status(200).json(dto);

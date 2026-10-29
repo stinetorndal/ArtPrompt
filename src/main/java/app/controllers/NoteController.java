@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
+//Denne klasse håndterer indkommende note-HTTP-forespørgsler
 public class NoteController {
     private static final Logger logger = LoggerFactory.getLogger(NoteController.class);
     private final NoteService noteService;

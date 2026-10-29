@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
+//Denne klasse håndterer forespørgslser på give farve mod Unsplash
 public class UnsplashController {
     private static final Logger logger = LoggerFactory.getLogger(RijksmuseumController.class);
     private final UnsplashService unsplashService;
@@ -19,11 +20,10 @@ public class UnsplashController {
         this.unsplashService = unsplashService;
     }
 
-    // GET /api/unsplash/photos?color=RED
+    // GET /api/unsplash/photos?color=RED ..eller anden farve fra Enum
     public void getPicturesByColor (Context ctx) {
         Color color = RequestUtil.getEnumQueryParam(ctx, "color", Color.class);
 
-        //Hent billeder fra Unsplash via Service
         List< PhotoDTO> photos = unsplashService.getPicturesWithPickedColor(color);
         ctx.status(200).json(photos);
     }

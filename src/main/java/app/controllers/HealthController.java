@@ -10,7 +10,7 @@ import java.util.Map;
 
 //Holder øje med om applikation og DB er oppe
 public class HealthController {
-    private static final Logger logger = LoggerFactory.getLogger(NoteController.class);
+    private static final Logger logger = LoggerFactory.getLogger(HealthController.class);
     private final EntityManagerFactory emf;
 
     public HealthController(EntityManagerFactory emf) {
@@ -31,7 +31,7 @@ public class HealthController {
             em.createNativeQuery("SELECT 1").getSingleResult();
             return true;
         } catch (Exception e){
-            logger.error("Healthcheck: Databasen svarer ikke: {]", e.getMessage());
+            logger.error("Healthcheck: Databasen svarer ikke: {}", e.getMessage());
             return false;
         }
     }

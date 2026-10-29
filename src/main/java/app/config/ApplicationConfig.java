@@ -16,13 +16,12 @@ import org.slf4j.LoggerFactory;
 
 
 //Konfigurerer og opretter Javalin-server + starter den og returnerer app-instans
-//Controller er kun handler
+// Afhængighedskæden: EMF -> DAO -> Service -> Controller -> Route
 public class ApplicationConfig {
     private static final Logger logger = LoggerFactory.getLogger(ApplicationConfig.class);
 
     public static Javalin startServer(int port) {
 
-        // Afhængighedskæden: EMF -> DAO -> Service -> Controller -> Route
         EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
         UserDAO userDAO = new UserDAO(emf);
         UserService userService = new UserService(userDAO);
