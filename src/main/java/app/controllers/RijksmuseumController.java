@@ -19,7 +19,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.List;
 import java.util.Objects;
 
-//Denne klasse tager sig af henvendelser mod ekstern API Rijksmuseum
+//Denne klasse tager sig af henvendelser fra bruger , der handler om malerier fra API Rijksmuseum
 public class RijksmuseumController {
 
     private static final Logger logger = LoggerFactory.getLogger(RijksmuseumController.class);

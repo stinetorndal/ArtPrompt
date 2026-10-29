@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-//Denne klasse håndterer bruger ift billeder fra Unsplash
+//Denne klasse håndterer bruger-forespørgsler ift billeder fra Unsplash
 public class SavedImageController {
     private static final Logger logger = LoggerFactory.getLogger(SavedImageController.class);
     private final SavedImageService savedImageService;

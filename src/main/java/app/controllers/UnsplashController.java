@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-//Denne klasse håndterer forespørgslser på give farve mod Unsplash
+//Denne klasse håndterer forespørgslser på given farve mod Unsplash
 public class UnsplashController {
     private static final Logger logger = LoggerFactory.getLogger(RijksmuseumController.class);
     private final UnsplashService unsplashService;
