@@ -6,7 +6,6 @@ public class Validator {
         if (email == null || email.isBlank()) {
             return false;
         }
-        //Så checker vi for @ og punktum efter @
         int atIndex = email.indexOf("@");
         if (atIndex <= 0){
             return false; //    Betyder intet @ eller @ står forrest

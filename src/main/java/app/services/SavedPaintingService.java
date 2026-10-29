@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-
+//Denne klasse gemmer malerier fra DB(Rijksmuseum) for bruger
 public class SavedPaintingService {
     private static final Logger logger = LoggerFactory.getLogger(SavedPaintingService.class);
     private final SavedPaintingDAO savedPaintingDAO;
@@ -34,7 +34,6 @@ public class SavedPaintingService {
 
     //slår bruger op via dto, opretter entitet, gemmer i DAO, returnerer savedPaintingDTO
     public SavedPaintingDTO savePaintingForUser(SavedPaintingDTO dto) {
-        // Check om bruger findes via UserDAO.findById
         User user = userDAO.findById(dto.getUserId());
         if (user == null) {
             logger.warn("Der findes ikke en bruger med det ID {}", dto.getUserId());
@@ -51,12 +50,9 @@ public class SavedPaintingService {
                     dto.getExternalId(), dto.getUserId());
             throw new ApiException(400, "Dette maleri er allerede gemt på din liste.");
         }
-        // Opret entitet ud fra DTO og User
         SavedPainting paintingToSave = savedPaintingMapper.toEntity(dto, user);
 
-        //Gem i DB
         SavedPainting savedEntity = savedPaintingDAO.create(paintingToSave);
-        //Returner som DTO
         return savedPaintingMapper.toDTO(savedEntity);
     }
 

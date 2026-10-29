@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 
+//Denne klasse gemmer billeder fra Unsplash for bruger
 public class SavedImageService {
     private static final Logger logger = LoggerFactory.getLogger(SavedImageService.class);
     private final SavedImageDAO savedImageDAO;
@@ -28,14 +29,13 @@ public class SavedImageService {
 
     //slår bruger op via dto, opretter entitet, gemmer i DAO, returnerer savedImageDTO
     public SavedImageDTO saveImageForUser(SavedImageDTO dto) {
-        // 1. Check om bruger findes via UserDAO.findById
         User user = userDAO.findById(dto.getUserId());
         if (user == null) {
             throw new ApiException(404, "Brugeren blev ikke fundet med ID: " + dto.getUserId());
         }
-        // 2. Opret entitet ud fra DTO og User
+
         SavedImage imageToSave = savedImageMapper.toEntity(dto, user);
-        // 2. Sikkerhedsventil: Check om maleriet allerede er gemt af denne bruger
+
         boolean alreadySaved = savedImageDAO.hasImageAlreadyBeenSavedByThisUserId(
                 dto.getExternalId(),
                 dto.getUserId()
@@ -45,9 +45,7 @@ public class SavedImageService {
                     dto.getExternalId(), dto.getUserId());
             throw new ApiException(400, "Dette maleri er allerede gemt på din liste.");
         }
-        //Gem i DB
         SavedImage savedEntity = savedImageDAO.create(imageToSave);
-        //Returner som DTO
         return savedImageMapper.toDTO(savedEntity);
     }
 

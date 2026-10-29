@@ -11,13 +11,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+//Denne klasse henter billeder fra Unsplash
 public class UnsplashService {
 
     private static final Logger logger = LoggerFactory.getLogger(UnsplashService.class);
     private final APIService apiService;
     private Random random = new Random();
 
-    // Bruges i den rigtige app
     public UnsplashService() {
         this(new APIService());
     }
@@ -46,7 +46,6 @@ public class UnsplashService {
     private List<PhotoDTO> fetchPage(String colorString, int page) {
         String url = buildSearchUrl(colorString, page);
         try {
-            //Mapper til SearchDTO da json-response er et objekt
             SearchDTO response = apiService.fetchAndConvert(url, SearchDTO.class);
             if (response != null && response.getSearchResult() != null) {
                 logger.info("Hentede {} billeder fra Unsplash for farven {}",

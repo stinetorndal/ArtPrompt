@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 
+//Denne klasse henter malerier fra Rikjsmuseum
 public class RijksmuseumService {
     private static final Logger logger = LoggerFactory.getLogger(RijksmuseumService.class);
     private APIService apiService = new APIService();

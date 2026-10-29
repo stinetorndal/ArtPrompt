@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*;
 
+//Denne klasser håndterer threads ift fetching fra Rijksmuseum
 public class PaintingsFetcherService {
 
     public static final int DEFAULT_THREADS = 4; //bruges i Controller
@@ -22,7 +23,7 @@ public class PaintingsFetcherService {
         this.rijksmuseumService = rijksmuseumService;
     }
 
-    //1. Hovedmetode - måler samlet tid og binder det sammen
+    //Hovedmetode - måler samlet tid og binder det sammen
     public FetchResultDTO fetchAllPaintingsConcurrently () {
         return fetchAllPaintingsConcurrently(DEFAULT_THREADS);
     }
@@ -37,7 +38,7 @@ public class PaintingsFetcherService {
         logger.info("Færdig med parallel hentning på {} ms", threadCount, totalDuration);
         return buildResults(results, totalDuration, threadCount);
     }
-    //2. Opretter en Callable-opgave for hver kategori i enummet via for-løkke (isf streams)
+    //Opretter en Callable-opgave for hver kategori i enummet via for-løkke (isf streams)
         private List<Callable<ArtistFetchResult>> createTasks() {
         List<Callable<ArtistFetchResult>> tasks  =new ArrayList<>();
         for (ArtistCategory category: ArtistCategory.values()) {
@@ -46,7 +47,7 @@ public class PaintingsFetcherService {
         return tasks;
     }
 
-    // 3. ENKELT trådopgave: Måler tid for EN specifik kunstner
+    //ENKELT trådopgave: Måler tid for EN specifik kunstner
     //Try catch indsat fordi hele fetching fejler, hvis en kunstner fejler
     private ArtistFetchResult fetchOneArtist(ArtistCategory category) {
         long start = System.currentTimeMillis();
@@ -66,7 +67,7 @@ public class PaintingsFetcherService {
     }
 
 
-    // 4. PARALLEL KØRSEL: Tildeler opgaver til trådpuljen (ExecutorService)
+    //PARALLEL KØRSEL: Tildeler opgaver til trådpuljen (ExecutorService)
     private List<ArtistFetchResult> runInParallel(List<Callable<ArtistFetchResult>> tasks, int threadcount) {
         int poolSize = Math.min(threadcount, tasks.size()); //Her hentes de fire tråde
         ExecutorService executor = Executors.newFixedThreadPool(poolSize);
@@ -85,7 +86,7 @@ public class PaintingsFetcherService {
         }
     }
 
-    // 5. SAMLER RESULTATET: Bygger DTO'en ud fra listen af resultater
+    // SAMLER RESULTATET: Bygger DTO'en ud fra listen af resultater
     private FetchResultDTO buildResults(List<ArtistFetchResult> results, long totalDuration, int threadCount) {
         List<FetchPaintingsTimeStatsDTO> stats = new ArrayList<>();
         List<SavedPaintingDTO> allPaintings = new ArrayList<>();

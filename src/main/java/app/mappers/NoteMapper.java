@@ -18,7 +18,7 @@ public class NoteMapper {
                 note.getCreatedAt()
         );
     }
-    //Opretter nyt Note-objekt, bruger settere til at overføre data til DTO og knytte User-entitet
+    //Opretter nyt Note-objekt
         public Note toEntity(NoteDTO dto, User user){
             if (dto == null) return null;
 

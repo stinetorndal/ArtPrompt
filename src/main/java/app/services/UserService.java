@@ -23,49 +23,41 @@ public class UserService {
     }
 
     public UserDTO createUser(UserDTO userDTO) {
-        //Validér email
         if (!Validator.isEmailValid(userDTO.getEmail())) {
             logger.warn("Forsøg på oprettelse med ugyldig email: {}", userDTO.getEmail());
             throw new ValidationException("Ugyldig emailadresse. Skal indeholde @ og domæne, f.eks. .dk");
         }
-        //Validér password
         if (!Validator.isPasswordValid(userDTO.getPassword())) {
             logger.warn("Forsøg på oprettelse med ugyldigt password for email: {}", userDTO.getEmail());
             throw new ValidationException("Adgangskode skal være på mindst 8 tegn og indeholde mindst ét stort bogstav, ét tal og ét specialtegn");
         }
-        //Er brugernavn allerede i brug i db?
         if (userDAO.doesEmailExist(userDTO.getEmail())) {
             logger.warn("Oprettelse afvist. Emailen {} allerede i brug", userDTO.getEmail());
             throw new UserAlreadyExistsException("E-mailen er allerede i brug");
 
         }
-        //Hash med BCrypt
         String hashedPassword = BCrypt.hashpw(userDTO.getPassword(), BCrypt.gensalt());
-        //Opret User-objekt med hashede pw
+
         User newUser = new User(userDTO.getEmail(), hashedPassword);
-        User savedUser = userDAO.create(newUser); //Sender til DAO for at gemme
+        User savedUser = userDAO.create(newUser);
         logger.info("Bruger er oprettet med email {}", userDTO.getEmail());
         return userMapper.toDTO(savedUser);
     }
 
     public UserDTO login(UserDTO userDTO) {
-        //Er email gyldigt format
         if (!Validator.isEmailValid(userDTO.getEmail())) {
             logger.warn("Emailadressen {} er i forkert format", userDTO.getEmail());
             throw new ValidationException("Ugyldig emailadresse");
         }
-        //Hent bruger - samme fejlbesked længere nede. God sikkerhedsskik
         User user = userDAO.findByEmail(userDTO.getEmail());
         if (user == null) {
             logger.warn("Der er indtastet forkert email {} eller password", userDTO.getEmail());
             throw new WrongEmailOrPasswordException("Forkert email eller adgangskode");
         }
-        //Valider password
         if (!BCrypt.checkpw(userDTO.getPassword(), user.getPassword())) {
             logger.warn("Der er indtastet forkert email {} eller password", userDTO.getEmail());
             throw new WrongEmailOrPasswordException("Forkert email eller adgangskode");
         }
-        //Returnér bruger hvis alt er ok
         logger.info("Login lykkedes for email: {}", userDTO.getEmail());
         return userMapper.toDTO(user);
     }

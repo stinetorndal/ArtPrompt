@@ -27,12 +27,11 @@ public class PromptService {
         this.promptWordDAO = new PromptWordDAO(emf);
     }
 
-    //returnerer List<PromptCategory> med alle værdierne fra ENUM
-    public List<PromptCategory> getAllCategories(){
+    public List<PromptCategory> getAllCategories() {
         return Arrays.asList(PromptCategory.values());
     }
 
-    public PromptWordDTO generatePromptWordDTO (PromptCategory cat1, PromptCategory cat2) {
+    public PromptWordDTO generatePromptWordDTO(PromptCategory cat1, PromptCategory cat2) {
         PromptWord word1 = randomizeWordsFromPromptWordDAO(cat1);
         PromptWord word2 = randomizeWordsFromPromptWordDAO(cat2);
 
@@ -40,25 +39,26 @@ public class PromptService {
     }
 
     //returnerer alle kategorier minus den brugeren allerede har valgt
-    public List<PromptCategory> getCategoriesAgainExcludingPickedOne (PromptCategory selectecCategory){
+    public List<PromptCategory> getCategoriesAgainExcludingPickedOne(PromptCategory selectecCategory) {
         List<PromptCategory> availableCategories = new ArrayList<>();
-        for (PromptCategory category : PromptCategory.values()){
-            if (category!=selectecCategory){
+        for (PromptCategory category : PromptCategory.values()) {
+            if (category != selectecCategory) {
                 availableCategories.add(category);
             }
         }
         return availableCategories;
     }
-    public PromptWord randomizeWordsFromPromptWordDAO(PromptCategory category){
+
+    //Gør ordene i kategorierne vilkårlige
+    public PromptWord randomizeWordsFromPromptWordDAO(PromptCategory category) {
         logger.info("Udvælger tilfældigt ord for kategori: {}", category);
-        List<PromptWord> wordsToBeRandomized= promptWordDAO.getWordByCategory(category);
+        List<PromptWord> wordsToBeRandomized = promptWordDAO.getWordByCategory(category);
         if (wordsToBeRandomized.isEmpty()) {
             logger.warn("Der blev ikke fundet nogle ord i denne kategori: {}", category);
             throw new ApiException(404, "Ingen ord fundet for den valgte kategori");
         }
-        //randomize
-            int randomIndex = random.nextInt(wordsToBeRandomized.size());
-            return wordsToBeRandomized.get(randomIndex);
-        }
+        int randomIndex = random.nextInt(wordsToBeRandomized.size());
+        return wordsToBeRandomized.get(randomIndex);
     }
+}
 

@@ -12,6 +12,7 @@ import jakarta.persistence.EntityManagerFactory;
 import java.util.ArrayList;
 import java.util.List;
 
+//Denne klasser gemmer noter og henter noter fra bruger
 public class NoteService {
     private final NoteDAO noteDAO;
     private final UserDAO userDAO;
@@ -23,19 +24,17 @@ public class NoteService {
         this.noteMapper = new NoteMapper();
     }
 
-    //slår bruger op via dto, opretter entitet, gemmer i DAO, returnerer noteDTO
+    //slår bruger op via dto, tjekker om bruger findes, opretter entitet, gemmer i DAO, returnerer noteDTO
     public NoteDTO saveNoteForUser(NoteDTO dto) {
-        // 1. Check om bruger findes via UserDAO.findById
         User user = userDAO.findById(dto.getUserId());
         if (user == null) {
             throw new ApiException(404, "Brugeren blev ikke fundet med ID: " + dto.getUserId());
         }
 
-        // 2. Opret entitet vha mapper
         Note noteToSave = noteMapper.toEntity(dto, user);
-        //Gem i DB
+
         Note savedEntity = noteDAO.create(noteToSave);
-        //Returner som DTO
+
         return noteMapper.toDTO(savedEntity);
     }
 

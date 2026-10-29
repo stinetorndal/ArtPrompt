@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
+//DEnne klasse gemmer fetchede billeder fra Rijksmuseum i DB og checker om de findes i forvejen
 public class SaveFetchedPaintingsService {
     private static final Logger logger = LoggerFactory.getLogger(SaveFetchedPaintingsService.class);
     private final PaintingDAO paintingDAO;
@@ -22,7 +23,6 @@ public class SaveFetchedPaintingsService {
         int savedCount = 0;
 
         for (SavedPaintingDTO dto : paintings){
-            //Check om maleri eksisterer i DB
             boolean exists = paintingDAO.existsByExternalId(dto.getExternalId());
 
             if (!exists) {
