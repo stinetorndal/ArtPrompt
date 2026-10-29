@@ -101,6 +101,13 @@ Measured on the deployed server (Hetzner), total time for fetching all artists (
 
 Each setting was run once, and network speed varies between runs. For example, earlier runs with 4 threads took between 2866 and 4110 ms. The difference between 4 and 6 threads is therefore within the noise, while the difference between 2 and 8 threads is clear. The upper limit of 8 threads protects the Rijksmuseum API.
 
+### UI removed
+The project originally included a `ui` package.
+It was fully commented out, until a decision had been made as to what to do with it.
+The code has been saved in a document as it serves as a roadmap for the frontend part.
+
+- The last version containing the UI can be found in commit `UI classes commented out. Message to incorrect password registration changed stinetorndal 26-10-2026 16:52`.
+
 ---
 
 # Data Model
