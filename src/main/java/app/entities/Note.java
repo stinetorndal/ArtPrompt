@@ -25,7 +25,6 @@ public class Note {
 
     // Mange noter til en bruger
     @ManyToOne
-    //Undgår uendelig løkke i ToString hvis student kalder course og omvendt
     @ToString.Exclude
     private User user;
 

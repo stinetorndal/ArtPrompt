@@ -14,7 +14,6 @@ public class Painting {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Billed-id hos ekstern udbyder, så samme billede ikke kan gemmes to gange
     private String externalId;
 
     // Skal bruges til at vise thumbnail i frontend

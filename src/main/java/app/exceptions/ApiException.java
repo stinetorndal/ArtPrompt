@@ -3,6 +3,7 @@
     import org.slf4j.Logger;
     import org.slf4j.LoggerFactory;
 
+    //Denne klasse er en custom exception der håndterer HTTP-fejl og logger
     public class ApiException extends RuntimeException {
         private int code;
         private static final Logger logger = LoggerFactory.getLogger(ApiException.class);

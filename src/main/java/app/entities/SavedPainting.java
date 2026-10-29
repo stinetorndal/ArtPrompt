@@ -23,7 +23,6 @@ public class SavedPainting {
 
     // Mange malerier til en bruger
     @ManyToOne
-    //Undgår uendelig løkke i ToString hvis student kalder course og omvendt
     @ToString.Exclude
     private User user;
 

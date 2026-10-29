@@ -14,7 +14,6 @@ public class SavedImage {
     private Long id;
     //Bruges til at vise thumbnail i frontend
     private String url;
-    //Billed-id hos ekstern udbyder, så samme billede ikke kan gemmes to gange
     private String externalId;
     private String title;
     //Skal bruges til at vise kilde. Krav fra APIs side
@@ -22,7 +21,6 @@ public class SavedImage {
 
     // Mange images til en bruger
     @ManyToOne
-    //Undgår uendelig løkke i ToString hvis student kalder course og omvendt
     @ToString.Exclude
     private User user;
 
