@@ -23,7 +23,7 @@ public class PromptServiceCategoryTest {
     void testGetAllCategoriesReturnsAllEnumValues(){
         //Act
         List<PromptCategory> categories = promptService.getAllCategories();
-        // Udskriv resultatet i konsollen
+
         System.out.println("--- ALLE KATEGORIER ---");
         for (PromptCategory cat : categories) {
             System.out.println("- " + cat);
@@ -43,7 +43,7 @@ public class PromptServiceCategoryTest {
         // Act
         List <PromptCategory> availableCategories =
                 promptService.getCategoriesAgainExcludingPickedOne(pickedCategory);
-        // Udskriv de resterende kategorier i konsollen
+
         System.out.println("RESTERENDE KATEGORIER:");
         for (PromptCategory cat : availableCategories) {
             System.out.println("- " + cat);

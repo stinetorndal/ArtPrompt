@@ -1,8 +1,6 @@
 package app.dao;
 
-import app.dtos.savedimages.SavedImageDTO;
 import app.entities.SavedImage;
-import app.entities.User;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.TypedQuery;

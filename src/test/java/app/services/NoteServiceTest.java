@@ -80,7 +80,7 @@ public class NoteServiceTest {
         assertNotEquals(fakeDate, result.getCreatedAt());
     }
 
-    // SGemmer en note for bruger, der ikke eksisterer, Skal give  404
+    // Gemmer en note for bruger, der ikke eksisterer, Skal give  404
     @Test
     void testSaveNoteUserNotFoundThrowsApiException() {
         //Arrange

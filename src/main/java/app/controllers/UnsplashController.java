@@ -2,7 +2,6 @@ package app.controllers;
 
 import app.dtos.unsplash.PhotoDTO;
 import app.entities.Color;
-import app.exceptions.ApiException;
 import app.services.UnsplashService;
 import app.utils.RequestUtil;
 import io.javalin.http.Context;

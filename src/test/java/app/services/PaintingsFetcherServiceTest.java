@@ -1,7 +1,6 @@
 package app.services;
 
 import app.dtos.savedpaintings.FetchResultDTO;
-import app.entities.ArtistCategory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

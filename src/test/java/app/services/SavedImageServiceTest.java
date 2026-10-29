@@ -38,10 +38,8 @@ class SavedImageServiceTest {
         try (EntityManager em = emf.createEntityManager()) {
             em.getTransaction().begin();
 
-            // 1. Tøm eksisterende billeder
             em.createQuery("DELETE FROM SavedImage").executeUpdate();
 
-            // 2. Tjek om en testbruger findes, ellers opret en
             List<User> users = em.createQuery("SELECT u FROM User u", User.class).getResultList();
             User testUser;
             if (users.isEmpty()) {
@@ -53,7 +51,6 @@ class SavedImageServiceTest {
 
             em.getTransaction().commit();
 
-            // Gem det reelle ID fra databasen
             this.existingUserId = testUser.getId();
         }
     }
@@ -81,7 +78,7 @@ class SavedImageServiceTest {
 
     @Test
     void testSaveImageForUserUserNotFoundThrowsApiException() {
-        // Arrange - Et bruger-ID der garanteret IKKE findes
+        // Arrange
         Long nonExistingUserId = 9999L;
         SavedImageDTO inputDto = new SavedImageDTO(
                 null,
@@ -103,7 +100,7 @@ class SavedImageServiceTest {
 
     @Test
     void testGetSavedImagesByUserId() {
-        // Arrange - Gem 2 billeder for test-brugeren
+        // Arrange
         SavedImageDTO dto1 = new SavedImageDTO(null, "https://url1.com", "id-1", "Billede 1", "Unsplash", existingUserId);
         SavedImageDTO dto2 = new SavedImageDTO(null, "https://url2.com", "id-2", "Billede 2", "Unsplash", existingUserId);
 

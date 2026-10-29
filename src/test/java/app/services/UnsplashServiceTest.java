@@ -32,7 +32,7 @@ public class UnsplashServiceTest {
     @Test
     @DisplayName("Returnerer billeder fra Unsplash for en given farve")
     void getPicturesWithPickedColor() {
-        // Arrange: ét dummy-billede, gentaget 10 gange
+        // Arrange
         PhotoDTO photo = new PhotoDTO("id_1", new PhotographerDTO(), new PictureUrlDTO());
         SearchDTO searchDTO = new SearchDTO(Collections.nCopies(10, photo));
 

@@ -44,8 +44,6 @@ class SavedPaintingServiceTest {
             em.createQuery("DELETE FROM User").executeUpdate();
             em.getTransaction().commit();
         }
-
-        // Opret to testbrugere i databasen
         user1 = userDAO.create(new User("bruger1@test.dk", "password123"));
         user2 = userDAO.create(new User("bruger2@test.dk", "password123"));
     }
@@ -56,7 +54,6 @@ class SavedPaintingServiceTest {
         SavedPaintingDTO dto = makeDto("SK-C-5", "Nattevagten", user1.getId());
         SavedPaintingDTO saved = service.savePaintingForUser(dto);
 
-        // Verificer direkte i databasen
         try (EntityManager em = emf.createEntityManager()) {
             List<SavedPainting> paintings = em.createQuery(
                             "SELECT s FROM SavedPainting s WHERE s.user.id = :userId", SavedPainting.class)

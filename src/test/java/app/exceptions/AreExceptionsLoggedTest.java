@@ -39,7 +39,6 @@ public class AreExceptionsLoggedTest {
         Path logFilePath = Path.of("logs/artprompt_errors.log");
         String expectedMessage = "Bruger ikke fundet";
 
-        // Logger fejlen så den havner i filen
         logger.error("ApiException (code=404): {}", expectedMessage);
 
         assertTrue(Files.exists(logFilePath), "Logfilen blev ikke oprettet på stien: " + logFilePath);

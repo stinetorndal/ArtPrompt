@@ -23,7 +23,6 @@ class UserServiceTest {
 
     @BeforeEach
     void setUp() {
-        // Tømmer alle afhængige tabeller før 'User' for at undgå Foreign Key-konflikter
         try (var em = emf.createEntityManager()) {
             em.getTransaction().begin();
             em.createQuery("DELETE FROM Note").executeUpdate();

@@ -2,7 +2,6 @@ package app.controllers;
 
 import app.dtos.promptword.PromptWordDTO;
 import app.entities.PromptCategory;
-import app.exceptions.ApiException;
 import app.services.PromptService;
 import app.utils.RequestUtil;
 import io.javalin.http.Context;

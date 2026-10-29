@@ -18,7 +18,6 @@ class PromptWordSeederTest {
 
     @BeforeAll
     static void setUp() {
-        // Henter test-database konfigurationen
         emf = HibernateConfig.getEntityManagerFactory();
     }
 
@@ -30,7 +29,7 @@ class PromptWordSeederTest {
         // Act
         seeder.seed();
 
-        // Assert - Chek om der er lagt ord i databasen
+        // Assert
         try (EntityManager em = emf.createEntityManager()) {
             List words = em.createQuery("SELECT p FROM PromptWord p", PromptWord.class).getResultList();
             assertFalse(words.isEmpty(), "Databasen bør ikke være tom efter seeding");
@@ -41,12 +40,12 @@ class PromptWordSeederTest {
     void testSeedDoesNotDuplicateData() {
         // Arrange
         PromptWordSeeder seeder = new PromptWordSeeder(emf);
-        seeder.seed(); // Første kørsel
+        seeder.seed();
 
         // Act
-        seeder.seed(); // Anden kørsel (bør ignoreres pga. hasData())
+        seeder.seed();
 
-        // Assert - Checker at antallet af ord ikke er fordoblet
+        // Assert
         try (EntityManager em = emf.createEntityManager()) {
             Long count = em.createQuery("SELECT COUNT(p) FROM PromptWord p", Long.class).getSingleResult();
 

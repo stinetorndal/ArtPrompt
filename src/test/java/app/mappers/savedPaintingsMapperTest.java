@@ -22,10 +22,9 @@ class SavedPaintingMapperTest {
     @Test
     @DisplayName("toDTO - sikrer at title og artist ikke ombyttes")
     void toDTO_verificerPlaceringAfFelter() {
-        // Arrange: Opretter test-bruger og maleri via deres konstruktører
+        // Arrange
         User user = new User("test@example.com", "password123");
 
-        // SavedPainting(id, externalId, url, artist, title, year, user)
         SavedPainting painting = new SavedPainting(
                 1L,
                 "SK-C-5",
@@ -39,7 +38,7 @@ class SavedPaintingMapperTest {
         // Act
         SavedPaintingDTO dto = mapper.toDTO(painting);
 
-        // Assert: Tjekker at felterne sidder de rigtige steder
+        // Assert
         assertNotNull(dto);
         assertEquals("SK-C-5", dto.getExternalId());
         assertEquals("Nattevagten", dto.getTitle(), "Titel skal være Nattevagten");

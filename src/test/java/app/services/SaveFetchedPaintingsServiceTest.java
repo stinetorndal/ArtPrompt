@@ -35,7 +35,6 @@ class SaveFetchedPaintingsServiceTest {
         RijksmuseumService rijksmuseumService = new RijksmuseumService();
         fetcherService = new PaintingsFetcherService(rijksmuseumService);
 
-        // Rydder painting-tabellen i testdatabasen før hver test
         try (EntityManager em = emf.createEntityManager()) {
             em.getTransaction().begin();
             em.createQuery("DELETE FROM Painting").executeUpdate();
@@ -46,19 +45,17 @@ class SaveFetchedPaintingsServiceTest {
     @Test
     @DisplayName("Gemmer alle hentede malerier og undgår dubletter ved næste kørsel")
     void saveAllNewPaintings_savesPaintingsAndIgnoresDuplicates() {
-        // 1. ACT: Hent malerier fra API'et
+        //Act
         FetchResultDTO fetchResult = fetcherService.fetchAllPaintingsConcurrently();
         assertFalse(fetchResult.getPaintings().isEmpty(), "Der skal være hentet malerier fra API'et");
 
-        // 2. ACT: Gem alle nye malerier i testdatabasen
         int firstSaveCount = saveService.saveAllNewPaintings(fetchResult.getPaintings());
 
-        // 3. ASSERT: Verificer at de blev gemt i databasen
+        //Assert
         List<Painting> allInDb = paintingDAO.findAll();
         assertEquals(firstSaveCount, allInDb.size(), "Antal gemte malerier i DB skal matche servicens tæller");
         assertTrue(firstSaveCount > 0, "Der bør være gemt mere end 0 malerier");
 
-        // 4. ACT & ASSERT: Kør gem-metoden igen med samme data og verificer at 0 bliver gemt
         int secondSaveCount = saveService.saveAllNewPaintings(fetchResult.getPaintings());
         assertEquals(0, secondSaveCount, "Dubletter må ikke gemmes anden gang");
     }

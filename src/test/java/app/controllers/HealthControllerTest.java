@@ -11,7 +11,7 @@ import java.util.Map;
 
 import static org.mockito.Mockito.*;
 
-// Tests that HealthController answers 200 when the database responds and 503 when it does not
+// Tester at HealthController svarer 200 når DB svarer og ellers 503
 class HealthControllerTest {
 
     private EntityManagerFactory emfMock;
@@ -20,7 +20,7 @@ class HealthControllerTest {
     private Context ctxMock;
     private HealthController controller;
 
-    // Creates mocks of the database and of Javalin's Context
+    // Laver mocks af DB
     @BeforeEach
     void setUp() {
         emfMock = mock(EntityManagerFactory.class);
@@ -32,7 +32,7 @@ class HealthControllerTest {
         when(ctxMock.status(anyInt())).thenReturn(ctxMock);
     }
 
-    // A database that answers the query gives status 200 and UP
+    // Hvis DB svarer = 200 og UP
     @Test
     void testCheckReturns200WhenDatabaseAnswers() {
         //Arrange
@@ -46,7 +46,7 @@ class HealthControllerTest {
         verify(ctxMock).json(Map.of("status", "UP"));
     }
 
-    // A database that cannot be reached gives status 503 and DOWN
+    // DB svarer ikke = 503 + DOWN
     @Test
     void testCheckReturns503WhenDatabaseIsDown() {
         when(emfMock.createEntityManager()).thenThrow(new RuntimeException("Connection refused"));

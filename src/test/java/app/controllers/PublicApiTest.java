@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
 
-//Denne klase tester et endpoint på en tilfældig ledig port og checker server svarer med status 200 ok
+//Denne klasse tester et endpoint på en tilfældig ledig port og checker server svarer med status 200 ok
 class PublicApiTest {
 
     private static Javalin app;
