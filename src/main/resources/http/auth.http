@@ -3,11 +3,11 @@ POST {{host}}/api/v1/auth/register
 Content-Type: application/json
 
 {
-  "email": "SKRIV EN GYLDIG EMAIL HER",
-  "password": "SKRIV ET PASSWORD HER"
+  "email": "SKRIV EMAIL HER",
+  "password": "SKRIV PASSWORD HER"
 }
 
-### Login med ny bruger (Happy Path)
+### Login med admin (Happy Path) / admin
 POST {{host}}/api/v1/auth/login
 Content-Type: application/json
 

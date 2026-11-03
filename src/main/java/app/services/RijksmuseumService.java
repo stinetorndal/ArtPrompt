@@ -18,6 +18,7 @@ public class RijksmuseumService {
     private APIService apiService = new APIService();
     private static final int MAX_PAINTINGS_PER_ARTIST = 20;
 
+    //Søger hos Rijksmuseum efter malerier, returnerer id'er
     public List<String> fetchPaintingsIdsByArtist(ArtistCategory artist) {
         String query = artist.getApiQuery();
         String url = "https://data.rijksmuseum.nl/search/collection?type=painting&creator=" + query.replace(" ", "%20");
@@ -36,7 +37,7 @@ public class RijksmuseumService {
             }
             logger.info("Hentede {} maleri-IDér for kunstneren {}", ids.size(), artist.name());
             return ids;
-        } catch (ApiException e) { //Tikføjet for at kunne kaste fejl via RetryableException
+        } catch (ApiException e) { //Tilføjet for at kunne kaste fejl via RetryableException
             throw e;
         } catch (Exception e) {
             logger.error("Fejl ved hentning af maleri-IDér for {}:{}", artist.name(), e.getMessage());
@@ -44,7 +45,7 @@ public class RijksmuseumService {
         }
     }
 
-    //Hent detaljer for ET billede
+    //Hent detaljer for ET billede, titel, årstal, billede
     public PaintingDTO fetchPaintingDetailsById(String objectId) {
         String url = objectId + "?_profile=la-framed";
         try {

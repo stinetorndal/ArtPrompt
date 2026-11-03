@@ -23,11 +23,12 @@ public class PaintingsFetcherService {
         this.rijksmuseumService = rijksmuseumService;
     }
 
-    //Hovedmetode - måler samlet tid og binder det sammen
+    //Hvis der ikke er valgt antal
     public FetchResultDTO fetchAllPaintingsConcurrently () {
         return fetchAllPaintingsConcurrently(DEFAULT_THREADS);
     }
 
+    //Hovedmetode - måler samlet tid og binder det sammen
     public FetchResultDTO fetchAllPaintingsConcurrently (int threadCount) {
         long start = System.currentTimeMillis();
 
@@ -38,6 +39,7 @@ public class PaintingsFetcherService {
         logger.info("Færdig med parallel hentning på {} ms", threadCount, totalDuration);
         return buildResults(results, totalDuration, threadCount);
     }
+
     //Opretter en Callable-opgave for hver kategori i enummet via for-løkke (isf streams)
         private List<Callable<ArtistFetchResult>> createTasks() {
         List<Callable<ArtistFetchResult>> tasks  =new ArrayList<>();

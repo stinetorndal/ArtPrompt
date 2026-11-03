@@ -15,7 +15,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-//Denne test tester op imid testdb. Om note gemmes under rette bruger og får servers UTC-timestamp
+//Denne test tester op imod testdb. Om note gemmes under rette bruger og får servers UTC-timestamp
 public class NoteServiceTest {
 
     private static EntityManagerFactory emf;
