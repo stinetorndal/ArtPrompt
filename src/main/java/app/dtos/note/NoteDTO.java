@@ -22,6 +22,9 @@ public class NoteDTO {
     //Vises som 2026-10-26 i JSON og sættes af serveren, ikke klienten
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate createdAt;
+
 }
+
+
 
 

@@ -36,6 +36,7 @@ public class PaintingsFetcherService {
         List<ArtistFetchResult> results = runInParallel(tasks, threadCount);
 
         long totalDuration = System.currentTimeMillis() -start;
+        //RET HER!!!! Mangler parameter
         logger.info("Færdig med parallel hentning på {} ms", threadCount, totalDuration);
         return buildResults(results, totalDuration, threadCount);
     }

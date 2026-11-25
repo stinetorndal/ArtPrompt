@@ -26,3 +26,16 @@ Authorization: Bearer {{auth_token}}
 GET {{host}}/api/v1/notes/user/{{admin_id}}
 Content-Type: application/json
 Authorization: Bearer {{auth_token}}
+
+### Ret en note (skift 1 til id'et fra svaret, da du gemte noten)
+PUT {{host}}/api/v1/notes/6
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
+{
+  "text": "Dark Fantasy aesthetic, rettet tekst"
+}
+
+### Slet en note (samme id)
+DELETE {{host}}/api/v1/notes/6
+Authorization: Bearer {{auth_token}}

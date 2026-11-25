@@ -48,5 +48,36 @@ public class NoteService {
         }
         return dtos;
     }
+
+    //Retter teksten i en eksisterende note og returnerer den opdaterede note
+    public NoteDTO updateNote(Long noteId, String newText) {
+        if (newText == null || newText.isBlank()) {
+            throw new ApiException(400, "Noten må ikke være tom");
+        }
+        Note note = findNoteOrThrow(noteId);
+        note.setText(newText);
+        Note updatedNote = noteDAO.update(note);
+        return noteMapper.toDTO(updatedNote);
+    }
+
+    //Sletter en note. Kaster 404, hvis noten ikke findes
+    public void deleteNote(Long noteId) {
+        findNoteOrThrow(noteId);
+        noteDAO.delete(noteId);
+    }
+
+    //Finder id på den bruger, der ejer noten, så controlleren kan tjekke ejerskab
+    public Long getOwnerId(Long noteId) {
+        return findNoteOrThrow(noteId).getUser().getId();
+    }
+
+    //Henter en note eller kaster 404, hvis den ikke findes
+    private Note findNoteOrThrow(Long noteId) {
+        Note note = noteDAO.findById(noteId);
+        if (note == null) {
+            throw new ApiException(404, "Noten blev ikke fundet med ID: " + noteId);
+        }
+        return note;
+    }
 }
 

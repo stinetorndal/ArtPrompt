@@ -36,4 +36,26 @@ public class NoteController {
 
         ctx.status(200).json(noteDTOS);
     }
+    //Retter teksten i en note. Kun ejeren eller en admin må rette den
+    public void updateNote(Context ctx) {
+        Long noteId = RequestUtil.getLongPathParam(ctx, "id");
+        RequestUtil.ensureOwnerIsAdminOrUser(ctx, noteService.getOwnerId(noteId));
+
+        NoteDTO inputDTO = ctx.bodyAsClass(NoteDTO.class); // Laver JSON om til NoteDTO
+        NoteDTO resultDTO = noteService.updateNote(noteId, inputDTO.getText()); //COntroller kalder Service, service retter og sender tilbage
+
+        logger.info("Opdaterede note ID: {}", noteId);
+        ctx.status(200).json(resultDTO);
+    }
+
+    //Sletter en note. Kun ejeren eller en admin må slette den
+    public void deleteNote(Context ctx) {
+        Long noteId = RequestUtil.getLongPathParam(ctx, "id");
+        RequestUtil.ensureOwnerIsAdminOrUser(ctx, noteService.getOwnerId(noteId));
+
+        noteService.deleteNote(noteId);
+
+        logger.info("Slettede note ID: {}", noteId);
+        ctx.status(204);
+    }
 }

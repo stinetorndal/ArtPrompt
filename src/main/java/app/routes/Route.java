@@ -7,6 +7,8 @@ import io.javalin.apibuilder.EndpointGroup;
 import static io.javalin.apibuilder.ApiBuilder.path;
 import static io.javalin.apibuilder.ApiBuilder.get;
 import static io.javalin.apibuilder.ApiBuilder.post;
+import static io.javalin.apibuilder.ApiBuilder.put;
+import static io.javalin.apibuilder.ApiBuilder.delete;
 
 //Her ligger alle routes og controllerne instantieres, applikationens vejkort
 //Route er bindeled mellem controller og Javalin-server
@@ -70,6 +72,8 @@ public class Route {
                 path("/notes", () -> {
                     post("/save", noteController::saveNote, Role.USER, Role.ADMIN);
                     get("/user/{userId}", noteController::getSavedNotesByUser, Role.USER, Role.ADMIN);
+                    put("/{id}", noteController::updateNote, Role.USER, Role.ADMIN);
+                    delete("/{id}", noteController::deleteNote, Role.USER, Role.ADMIN);
                 });
 
                 // Rijksmuseum endpoints
