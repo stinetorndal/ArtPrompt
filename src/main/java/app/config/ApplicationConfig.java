@@ -74,6 +74,13 @@ public class ApplicationConfig {
         Javalin app = Javalin.create(config -> {
             config.router.apiBuilder(route.getRoutes());
             config.bundledPlugins.enableRouteOverview("/api/v1/routes");
+            // CORS: giver frontenden lov til at kalde API'et fra en anden adresse.
+            // localhost:5173 er React-appen, mens den udvikles i Vite
+            config.bundledPlugins.enableCors(cors -> {
+                cors.addRule(rule -> {
+                    rule.allowHost("http://localhost:5173");
+                });
+            });
         });
 
         // 3. Global Rate Limiting på alle API'routes

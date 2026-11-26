@@ -28,7 +28,7 @@ Content-Type: application/json
 Authorization: Bearer {{auth_token}}
 
 ### Ret en note (skift 1 til id'et fra svaret, da du gemte noten)
-PUT {{host}}/api/v1/notes/6
+PUT {{host}}/api/v1/notes/7
 Content-Type: application/json
 Authorization: Bearer {{auth_token}}
 
@@ -37,5 +37,5 @@ Authorization: Bearer {{auth_token}}
 }
 
 ### Slet en note (samme id)
-DELETE {{host}}/api/v1/notes/6
+DELETE {{host}}/api/v1/notes/7
 Authorization: Bearer {{auth_token}}
